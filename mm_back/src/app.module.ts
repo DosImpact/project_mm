@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
 import { join } from 'path';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { User } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -16,7 +16,15 @@ import { UsersModule } from './users/users.module';
       validationSchema: Joi.object({
         NODE_ENV: Joi.string().valid('dev', 'test'),
         MAINTAINER: Joi.string().required(),
+        DB_URI: Joi.string().required(),
       }),
+    }),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      url: process.env.DB_URI,
+      synchronize: process.env.NODE_ENV === 'dev' ? true : false,
+      logging: false,
+      entities: [User],
     }),
     GraphQLModule.forRoot({
       introspection: true,
@@ -26,7 +34,7 @@ import { UsersModule } from './users/users.module';
     }),
     UsersModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
