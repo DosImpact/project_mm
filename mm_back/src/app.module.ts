@@ -17,6 +17,7 @@ import { UsersModule } from './users/users.module';
         NODE_ENV: Joi.string().valid('dev', 'test', 'production'),
         MAINTAINER: Joi.string().required(),
         DATABASE_URL: Joi.string().required(),
+        PORT: Joi.number().required(),
       }),
     }),
     TypeOrmModule.forRoot({
