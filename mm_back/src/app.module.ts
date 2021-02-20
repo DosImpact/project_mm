@@ -16,11 +16,14 @@ import { UsersModule } from './users/users.module';
       validationSchema: Joi.object({
         NODE_ENV: Joi.string().valid('dev', 'test'),
         MAINTAINER: Joi.string().required(),
-        DB_URI: Joi.string().required(),
+        DATABASE_URL: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
+      ssl: {
+        rejectUnauthorized: false,
+      },
       url: process.env.DATABASE_URL,
       synchronize: process.env.NODE_ENV === 'dev' ? true : false,
       logging: false,
