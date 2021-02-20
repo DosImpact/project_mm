@@ -21,7 +21,7 @@ import { UsersModule } from './users/users.module';
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      url: process.env.DB_URI,
+      url: process.env.DATABASE_URL,
       synchronize: process.env.NODE_ENV === 'dev' ? true : false,
       logging: false,
       entities: [User],
@@ -34,7 +34,5 @@ import { UsersModule } from './users/users.module';
     }),
     UsersModule,
   ],
-  controllers: [],
-  providers: [],
 })
 export class AppModule {}
