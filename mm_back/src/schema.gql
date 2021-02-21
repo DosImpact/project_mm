@@ -45,8 +45,15 @@ type Problem01Output {
   problem01: Problem01
 }
 
+type Problems01Output {
+  error: String
+  ok: Boolean!
+  problems01: [Problem01!]
+}
+
 type Query {
   deluser: String!
   getProblem01(problem01Input: Problem01Input!): Problem01Output!
+  getProblems01: Problems01Output!
   me: String!
 }
