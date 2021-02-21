@@ -1,4 +1,4 @@
-import { InputType, ObjectType } from '@nestjs/graphql';
+import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { IsString } from 'class-validator';
 import { CoreEntity } from 'src/common/entities/core.entity';
 import { Column, Entity } from 'typeorm';
@@ -7,22 +7,30 @@ import { Column, Entity } from 'typeorm';
 @InputType('AnswerInputType', { isAbstract: true })
 @ObjectType()
 export class Answer {
+  @Field(() => Boolean)
   isMultiple: boolean;
 
+  @Field(() => Boolean)
   isNumber: boolean;
 
-  answer: number | string | number[];
+  @Field(() => [String])
+  answer: string[];
 }
 
+@InputType('Problem01Input', { isAbstract: true })
+@ObjectType()
 @Entity()
-export class Number01 extends CoreEntity {
+export class Problem01 extends CoreEntity {
   @IsString()
   @Column()
+  @Field(() => String)
   title: string;
 
   @Column()
+  @Field(() => String)
   subTitle: string;
 
   @Column({ type: 'json' })
+  @Field(() => Answer)
   answer: Answer;
 }

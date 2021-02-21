@@ -4,6 +4,8 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
 import { join } from 'path';
+import { Problem01 } from './problems/entities/problem01.entity';
+import { ProblemsModule } from './problems/problems.module';
 import { User } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
 
@@ -28,7 +30,7 @@ import { UsersModule } from './users/users.module';
       url: process.env.DATABASE_URL,
       synchronize: process.env.NODE_ENV === 'dev' ? true : false,
       logging: false,
-      entities: [User],
+      entities: [User, Problem01],
     }),
     GraphQLModule.forRoot({
       introspection: true,
@@ -37,6 +39,7 @@ import { UsersModule } from './users/users.module';
       sortSchema: true,
     }),
     UsersModule,
+    ProblemsModule,
   ],
 })
 export class AppModule {}
