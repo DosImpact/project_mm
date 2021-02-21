@@ -2,7 +2,51 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Answer {
+  answer: [String!]!
+  isMultiple: Boolean!
+  isNumber: Boolean!
+}
+
+input AnswerInputType {
+  answer: [String!]!
+  isMultiple: Boolean!
+  isNumber: Boolean!
+}
+
+input CreateProblem01Input {
+  answer: AnswerInputType!
+  subTitle: String!
+  title: String!
+}
+
+type CreateProblem01Output {
+  error: String
+  ok: Boolean!
+}
+
+type Mutation {
+  createProblem01(createProblem01Input: CreateProblem01Input!): CreateProblem01Output!
+}
+
+type Problem01 {
+  answer: Answer!
+  subTitle: String!
+  title: String!
+}
+
+input Problem01Input {
+  id: Int!
+}
+
+type Problem01Output {
+  error: String
+  ok: Boolean!
+  problem01: Problem01
+}
+
 type Query {
   deluser: String!
+  getProblem01(problem01Input: Problem01Input!): Problem01Output!
   me: String!
 }
