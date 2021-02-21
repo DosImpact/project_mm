@@ -6,6 +6,7 @@ import {
   CreateProblem01Output,
 } from './dtos/create-problem01.dto';
 import { Problem01Input, Problem01Output } from './dtos/problem01.dto';
+import { Problems01Output } from './dtos/problems01.dto';
 import { Problem01 } from './entities/problem01.entity';
 
 /**
@@ -28,6 +29,15 @@ export class ProblemsService {
     try {
       const problem = await this.problem01Repo.findOneOrFail(id);
       return { ok: true, problem01: problem };
+    } catch (error) {
+      return { ok: false, error: 'cannot get Problem01' };
+    }
+  }
+
+  async getProblems01(): Promise<Problems01Output> {
+    try {
+      const problems = await this.problem01Repo.find();
+      return { ok: true, problems01: problems };
     } catch (error) {
       return { ok: false, error: 'cannot get Problem01' };
     }

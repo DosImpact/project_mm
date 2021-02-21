@@ -1,7 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
+
+const logger = new Logger('UsersService');
 
 @Injectable()
 export class UsersService {
@@ -9,9 +11,7 @@ export class UsersService {
     @InjectRepository(User)
     private readonly usersRepo: Repository<User>,
   ) {
-    (async () => {
-      console.log('userSerivce init');
-    })();
+    logger.debug('UsersService init');
   }
 
   async createUser() {

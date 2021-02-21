@@ -4,6 +4,7 @@ import {
   CreateProblem01Output,
 } from './dtos/create-problem01.dto';
 import { Problem01Input, Problem01Output } from './dtos/problem01.dto';
+import { Problems01Output } from './dtos/problems01.dto';
 import { Problem01 } from './entities/problem01.entity';
 import { ProblemsService } from './problems.service';
 
@@ -14,6 +15,11 @@ export class ProblemsResolver {
   @Query((returns) => Problem01Output)
   getProblem01(@Args('problem01Input') problem01Input: Problem01Input) {
     return this.problemsService.getProblem01(problem01Input);
+  }
+
+  @Query((returns) => Problems01Output)
+  getProblems01() {
+    return this.problemsService.getProblems01();
   }
 
   @Mutation((returns) => CreateProblem01Output)
