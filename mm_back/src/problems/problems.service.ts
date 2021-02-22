@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
@@ -7,6 +7,10 @@ import {
 } from './dtos/create-problem01.dto';
 import { Problem01Input, Problem01Output } from './dtos/problem01.dto';
 import { Problems01Output } from './dtos/problems01.dto';
+import {
+  UpdateProblem01Output,
+  UpdateProblem01Input,
+} from './dtos/update-problem01.dto';
 import { Problem01 } from './entities/problem01.entity';
 
 /**
@@ -17,6 +21,8 @@ import { Problem01 } from './entities/problem01.entity';
  * @param update
  * @param softdelete
  */
+
+const logger = new Logger('ProblemsService');
 
 @Injectable()
 export class ProblemsService {
@@ -56,5 +62,32 @@ export class ProblemsService {
       return { ok: false, error: 'cannot createProblem01 ' };
     }
     return { ok: true };
+  }
+
+  async updateProblem01({
+    answer,
+    id,
+    title,
+    subTitle,
+  }: UpdateProblem01Input): Promise<UpdateProblem01Output> {
+    try {
+      const problem = await this.problem01Repo.findOneOrFail(id);
+      console.log(problem);
+      if (answer) problem.answer = answer;
+      if (title) problem.title = title;
+      if (subTitle) problem.subTitle = subTitle;
+
+      const updatedProblem = await this.problem01Repo.save(problem);
+      logger.debug(updatedProblem);
+      return {
+        ok: true,
+        problem01: problem,
+      };
+    } catch (error) {
+      return {
+        error: 'cannot find problem',
+        ok: false,
+      };
+    }
   }
 }
