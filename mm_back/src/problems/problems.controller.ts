@@ -6,5 +6,7 @@ export class ProblemsController {
   constructor(private readonly problemsService: ProblemsService) {}
 
   @Get()
-  getAllProblems01() {}
+  getAllProblems01() {
+    return "getAllProblems01"
+  }
 }

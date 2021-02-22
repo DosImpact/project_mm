@@ -16,7 +16,7 @@ input AnswerInputType {
 
 input CreateProblem01Input {
   answer: AnswerInputType!
-  subTitle: String!
+  subTitle: String
   title: String!
 }
 
@@ -25,14 +25,25 @@ type CreateProblem01Output {
   ok: Boolean!
 }
 
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type Mutation {
+  UpdateProblem(updateProblem01Input: UpdateProblem01Input!): UpdateProblem01Output!
   createProblem01(createProblem01Input: CreateProblem01Input!): CreateProblem01Output!
 }
 
 type Problem01 {
   answer: Answer!
-  subTitle: String!
+  createdAt: DateTime!
+  deletedAt: DateTime!
+  id: Float!
+  subTitle: String
   title: String!
+  updatedAt: DateTime!
+  v: Float!
 }
 
 input Problem01Input {
@@ -56,4 +67,17 @@ type Query {
   getProblem01(problem01Input: Problem01Input!): Problem01Output!
   getProblems01: Problems01Output!
   me: String!
+}
+
+input UpdateProblem01Input {
+  answer: AnswerInputType
+  id: Float!
+  subTitle: String
+  title: String
+}
+
+type UpdateProblem01Output {
+  error: String
+  ok: Boolean!
+  problem01: Problem01
 }

@@ -26,9 +26,10 @@ export class Problem01 extends CoreEntity {
   @Field(() => String)
   title: string;
 
+  @IsString()
   @Column()
-  @Field(() => String)
-  subTitle: string;
+  @Field(() => String, { nullable: true })
+  subTitle?: string;
 
   @Column({ type: 'json' })
   @Field(() => Answer)
