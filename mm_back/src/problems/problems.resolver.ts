@@ -3,6 +3,10 @@ import {
   CreateProblem01Input,
   CreateProblem01Output,
 } from './dtos/create-problem01.dto';
+import {
+  DeleteProblem01Input,
+  DeleteProblem01Output,
+} from './dtos/delete-problem01.dto';
 import { Problem01Input, Problem01Output } from './dtos/problem01.dto';
 import { Problems01Output } from './dtos/problems01.dto';
 import {
@@ -34,9 +38,15 @@ export class ProblemsResolver {
   }
 
   @Mutation((returns) => UpdateProblem01Output)
-  UpdateProblem(
+  UpdateProblem01(
     @Args('updateProblem01Input') updateProblem01Input: UpdateProblem01Input,
   ) {
     return this.problemsService.updateProblem01(updateProblem01Input);
+  }
+  @Mutation((returns) => DeleteProblem01Output)
+  DeleteProblem01(
+    @Args('deleteProblem01Input') deleteProblem01Input: DeleteProblem01Input,
+  ) {
+    return this.problemsService.deleteProblem01(deleteProblem01Input);
   }
 }
