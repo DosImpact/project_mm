@@ -1,5 +1,6 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
-import { IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsBoolean, IsString, ValidateNested } from 'class-validator';
 import { CoreEntity } from 'src/common/entities/core.entity';
 import { Column, Entity } from 'typeorm';
 
@@ -7,12 +8,15 @@ import { Column, Entity } from 'typeorm';
 @InputType('AnswerInputType', { isAbstract: true })
 @ObjectType()
 export class Answer {
+  @IsBoolean()
   @Field(() => Boolean)
   isMultiple: boolean;
 
+  @IsBoolean()
   @Field(() => Boolean)
   isNumber: boolean;
 
+  @IsString({ each: true })
   @Field(() => [String])
   answer: string[];
 }
@@ -31,6 +35,8 @@ export class Problem01 extends CoreEntity {
   @Field(() => String, { nullable: true })
   subTitle?: string;
 
+  @ValidateNested({ each: true })
+  @Type(() => Answer)
   @Column({ type: 'json' })
   @Field(() => Answer)
   answer: Answer;
