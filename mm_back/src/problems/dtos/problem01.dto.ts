@@ -1,9 +1,11 @@
 import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
+import { IsNumber } from 'class-validator';
 import { CoreOutput } from 'src/common/dtos/output.dto';
 import { Problem01 } from '../entities/problem01.entity';
 
 @InputType()
 export class Problem01Input {
+  @IsNumber()
   @Field(() => Int)
   id: number;
 }

@@ -73,13 +73,13 @@ export class ProblemsService {
   }: UpdateProblem01Input): Promise<UpdateProblem01Output> {
     try {
       const problem = await this.problem01Repo.findOneOrFail(id);
-      console.log(problem);
+      // console.log(problem);
       if (answer) problem.answer = answer;
       if (title) problem.title = title;
       if (subTitle) problem.subTitle = subTitle;
-
-      const updatedProblem = await this.problem01Repo.save(problem);
-      logger.debug(updatedProblem);
+      await this.problem01Repo.save(problem);
+      // const updatedProblem = await this.problem01Repo.save(problem);
+      // logger.debug(updatedProblem);
       return {
         ok: true,
         problem01: problem,
