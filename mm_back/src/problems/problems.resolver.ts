@@ -1,5 +1,9 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
+  CheckProblem01Input,
+  CheckProblem01Output,
+} from './dtos/check-problem01.dto';
+import {
   CreateProblem01Input,
   CreateProblem01Output,
 } from './dtos/create-problem01.dto';
@@ -28,6 +32,12 @@ export class ProblemsResolver {
   @Query((returns) => Problems01Output)
   getProblems01() {
     return this.problemsService.getProblems01();
+  }
+  @Mutation((returns) => CheckProblem01Output)
+  checkProblem01(
+    @Args('checkProblem01Input') checkProblem01Input: CheckProblem01Input,
+  ) {
+    return this.problemsService.checkProblem01(checkProblem01Input);
   }
 
   @Mutation((returns) => CreateProblem01Output)

@@ -2,6 +2,10 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
+  CheckProblem01Input,
+  CheckProblem01Output,
+} from './dtos/check-problem01.dto';
+import {
   CreateProblem01Input,
   CreateProblem01Output,
 } from './dtos/create-problem01.dto';
@@ -104,6 +108,40 @@ export class ProblemsService {
       return {
         ok: false,
         error: 'cannot delete',
+      };
+    }
+  }
+
+  async checkProblem01({
+    id,
+    answer: uAnswer,
+  }: CheckProblem01Input): Promise<CheckProblem01Output> {
+    try {
+      const { answer: cAnswer } = await this.problem01Repo.findOneOrFail(id);
+      if (uAnswer.length !== cAnswer.answer.length) {
+        return {
+          ok: true,
+          isCorrect: false,
+        };
+      } else {
+        for (const [i, cAns] of cAnswer.answer.entries()) {
+          if (uAnswer[i] !== cAns) {
+            return {
+              ok: true,
+              isCorrect: false,
+            };
+          }
+        }
+        return {
+          ok: true,
+          isCorrect: true,
+        };
+      }
+    } catch (error) {
+      logger.error(error);
+      return {
+        ok: false,
+        error: `cannot checkProblem01 with id ${id}`,
       };
     }
   }
