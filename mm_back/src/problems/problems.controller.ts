@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { CreateProblem01Input } from './dtos/create-problem01.dto';
-import { DeleteProblem01Input } from './dtos/delete-problem01.dto';
-import { UpdateProblem01Input } from './dtos/update-problem01.dto';
+import { CreateProblem01Input } from './dtos/p01/create-problem01.dto';
+import { DeleteProblem01Input } from './dtos/p01/delete-problem01.dto';
+import { UpdateProblem01Input } from './dtos/p01/update-problem01.dto';
 import { ProblemsService } from './problems.service';
 
 @Controller('problems01')
