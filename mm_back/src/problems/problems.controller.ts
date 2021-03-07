@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { CheckProblem01Input } from './dtos/p01/check-problem01.dto';
 import { CreateProblem01Input } from './dtos/p01/create-problem01.dto';
 import { DeleteProblem01Input } from './dtos/p01/delete-problem01.dto';
 import { UpdateProblem01Input } from './dtos/p01/update-problem01.dto';
@@ -15,6 +16,10 @@ export class ProblemsController {
   @Get('/:id')
   getAllProblem01(@Param('id') id: number) {
     return this.problemsService.getProblem01({ id });
+  }
+  @Post('/check')
+  checkProblem01(@Body() checkProblem01Input: CheckProblem01Input) {
+    return this.problemsService.checkProblem01(checkProblem01Input);
   }
   @Post('/create')
   createProblem01(@Body() createProblem01Input: CreateProblem01Input) {
