@@ -1,17 +1,18 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { JwtService } from 'src/jwt/jwt.service';
 import { Repository } from 'typeorm';
 import {
   CreateProblem01Input,
   CreateProblem01Output,
-} from './dtos/create-problem01.dto';
-import { DeleteProblem01Input } from './dtos/delete-problem01.dto';
-import { Problem01Input, Problem01Output } from './dtos/problem01.dto';
-import { Problems01Output } from './dtos/problems01.dto';
+} from './dtos/p01/create-problem01.dto';
+import { DeleteProblem01Input } from './dtos/p01/delete-problem01.dto';
+import { Problem01Input, Problem01Output } from './dtos/p01/problem01.dto';
+import { Problems01Output } from './dtos/p01/problems01.dto';
 import {
   UpdateProblem01Output,
   UpdateProblem01Input,
-} from './dtos/update-problem01.dto';
+} from './dtos/p01/update-problem01.dto';
 import { Problem01 } from './entities/problem01.entity';
 
 /**

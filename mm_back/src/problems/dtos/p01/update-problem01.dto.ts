@@ -1,7 +1,7 @@
 import { Field, InputType, ObjectType, PartialType } from '@nestjs/graphql';
 import { IsNumber } from 'class-validator';
 import { CoreOutput } from 'src/common/dtos/output.dto';
-import { Problem01 } from '../entities/problem01.entity';
+import { Problem01 } from 'src/problems/entities/problem01.entity';
 import { CreateProblem01Input } from './create-problem01.dto';
 
 @InputType()

@@ -4,6 +4,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
 import { join } from 'path';
+import { JwtModule } from './jwt/jwt.module';
 import { Problem01 } from './problems/entities/problem01.entity';
 import { ProblemsModule } from './problems/problems.module';
 import { User } from './users/entities/user.entity';
@@ -20,6 +21,7 @@ import { UsersModule } from './users/users.module';
         MAINTAINER: Joi.string().required(),
         DATABASE_URL: Joi.string().required(),
         PORT: Joi.number().required(),
+        JWT_KEY: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRoot({
@@ -38,6 +40,7 @@ import { UsersModule } from './users/users.module';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
     }),
+    JwtModule.forRoot({ privateKey: process.env.JWT_KEY }),
     UsersModule,
     ProblemsModule,
   ],
