@@ -146,4 +146,8 @@ export class ProblemsService {
       };
     }
   }
+
+  async countProblem01(): Promise<number> {
+    return this.problem01Repo.count({});
+  }
 }

@@ -1,4 +1,4 @@
-import { Field, InputType, ObjectType } from '@nestjs/graphql';
+import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 import { IsBoolean, IsString, ValidateNested } from 'class-validator';
 import { CoreEntity } from 'src/common/entities/core.entity';
@@ -40,4 +40,7 @@ export class Problem01 extends CoreEntity {
   @Column({ type: 'json' })
   @Field(() => Answer)
   answer: Answer;
+
+  @Field(() => Int)
+  totalProblems01: number;
 }

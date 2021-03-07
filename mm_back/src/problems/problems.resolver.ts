@@ -1,4 +1,12 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Int,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import {
   CheckProblem01Input,
   CheckProblem01Output,
@@ -23,6 +31,11 @@ import { ProblemsService } from './problems.service';
 @Resolver((of) => Problem01)
 export class ProblemsResolver {
   constructor(private readonly problemsService: ProblemsService) {}
+
+  @ResolveField((returns) => Int)
+  totalProblems01(@Parent() problem01: Problem01) {
+    return this.problemsService.countProblem01();
+  }
 
   @Query((returns) => Problem01Output)
   getProblem01(@Args('problem01Input') problem01Input: Problem01Input) {

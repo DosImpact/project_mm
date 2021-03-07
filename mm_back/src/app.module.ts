@@ -35,10 +35,11 @@ import { UsersModule } from './users/users.module';
       entities: [User, Problem01],
     }),
     GraphQLModule.forRoot({
-      introspection: true,
-      playground: true,
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      sortSchema: true,
+      installSubscriptionHandlers: true,
+      introspection: true, //apollo API 스키마 fetch가능
+      playground: true, // 실서버 -> off
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'), // 생성된 schema 파일 확인 요망
+      sortSchema: true, // 정렬
     }),
     JwtModule.forRoot({ privateKey: process.env.JWT_KEY }),
     UsersModule,

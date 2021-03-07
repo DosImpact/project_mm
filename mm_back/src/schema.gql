@@ -64,6 +64,7 @@ type Problem01 {
   id: Float!
   subTitle: String
   title: String!
+  totalProblems01: Int!
   updatedAt: DateTime!
   v: Float!
 }
