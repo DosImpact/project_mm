@@ -13,21 +13,21 @@ import {
 export class CoreEntity {
   @Field(() => Number)
   @PrimaryGeneratedColumn()
-  id!: number;
+  id!: number; // auto increment id
 
   @Field(() => Date)
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt: Date; // auto log 생성일
 
   @Field(() => Date)
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt: Date; // auto log 업데이트 일자
 
   @Field(() => Date)
   @DeleteDateColumn()
-  deletedAt: Date;
+  deletedAt: Date; // auto log soft삭제
 
   @Field(() => Number)
   @VersionColumn()
-  v: number;
+  v: number; // auto log 업데이트 - 횟수
 }
