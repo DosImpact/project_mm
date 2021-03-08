@@ -6,6 +6,7 @@ import * as Joi from 'joi';
 import { join } from 'path';
 import { JwtModule } from './jwt/jwt.module';
 import { Problem01 } from './problems/entities/problem01.entity';
+import { Problem02 } from './problems/entities/problem02.entity';
 import { ProblemsModule } from './problems/problems.module';
 import { User } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
@@ -32,7 +33,7 @@ import { UsersModule } from './users/users.module';
       url: process.env.DATABASE_URL,
       synchronize: process.env.NODE_ENV === 'dev' ? true : false,
       logging: false,
-      entities: [User, Problem01],
+      entities: [User, Problem01, Problem02],
     }),
     GraphQLModule.forRoot({
       installSubscriptionHandlers: true,
