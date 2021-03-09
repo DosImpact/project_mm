@@ -14,4 +14,8 @@ export class LoginP02Input {
 }
 
 @ObjectType()
-export class LoginP02Output extends CoreOutput {}
+export class LoginP02Output extends CoreOutput {
+  @IsString()
+  @Field((types) => String, { nullable: true })
+  token?: string;
+}

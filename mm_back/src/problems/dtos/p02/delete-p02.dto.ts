@@ -3,11 +3,11 @@ import { IsNumber } from 'class-validator';
 import { CoreOutput } from 'src/common/dtos/output.dto';
 
 @InputType()
-export class Deleteroblem02Input {
+export class DeleteProblem02Input {
   @IsNumber()
   @Field((types) => Int)
   id: number;
 }
 
 @ObjectType()
-export class Deleteroblem02Output extends CoreOutput {}
+export class DeleteProblem02Output extends CoreOutput {}

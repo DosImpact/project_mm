@@ -12,6 +12,6 @@ export class Problem02Input {
 
 @ObjectType()
 export class Problem02Output extends CoreOutput {
-  @Field((types) => Problem02)
-  problem02: Problem02;
+  @Field((types) => Problem02, { nullable: true })
+  problem02?: Problem02;
 }

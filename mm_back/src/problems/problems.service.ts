@@ -1,6 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { JwtService } from 'src/jwt/jwt.service';
 import { Repository } from 'typeorm';
 import {
   CheckProblem01Input,
@@ -17,7 +16,21 @@ import {
   UpdateProblem01Output,
   UpdateProblem01Input,
 } from './dtos/p01/update-problem01.dto';
+import { CreateProblem02Input } from './dtos/p02/create-p02.dto';
+import { Problem02Input, Problem02Output } from './dtos/p02/p02.dto';
+import { Problems02Input, Problems02Output } from './dtos/p02/ps02.dto';
+import {
+  UpdateProblem02Input,
+  UpdateProblem02Output,
+} from './dtos/p02/update-p02.dto';
+import {
+  DeleteProblem02Input,
+  DeleteProblem02Output,
+} from './dtos/p02/delete-p02.dto';
 import { Problem01 } from './entities/problem01.entity';
+import { Problem02 } from './entities/problem02.entity';
+import { LoginP02Input, LoginP02Output } from './dtos/p02/login-p02.dto';
+import { JwtService } from 'src/jwt/jwt.service';
 
 /**
  * ✅ @param read1
@@ -35,6 +48,9 @@ export class ProblemsService {
   constructor(
     @InjectRepository(Problem01)
     private readonly problem01Repo: Repository<Problem01>,
+    @InjectRepository(Problem02)
+    private readonly problem02Repo: Repository<Problem02>,
+    private readonly jwtService: JwtService,
   ) {}
 
   async getProblem01({ id }: Problem01Input): Promise<Problem01Output> {
@@ -149,5 +165,121 @@ export class ProblemsService {
 
   async countProblem01(): Promise<number> {
     return this.problem01Repo.count({});
+  }
+  // --- problem02
+
+  async getProblem02({ id }: Problem02Input): Promise<Problem02Output> {
+    try {
+      const problem02 = await this.problem02Repo.findOneOrFail(id);
+      return {
+        problem02,
+        ok: true,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        ok: false,
+        error: 'cannot find problem02',
+      };
+    }
+  }
+  async getProblems02(): Promise<Problems02Output> {
+    try {
+      const problems02 = await this.problem02Repo.find({});
+      return {
+        ok: true,
+        problems02,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        ok: false,
+        error: 'cannot find problem02',
+        problems02: [],
+      };
+    }
+  }
+  async createProblem02({
+    email,
+    password,
+    role,
+  }: CreateProblem02Input): Promise<CreateProblem01Output> {
+    try {
+      await this.problem02Repo.save(
+        this.problem02Repo.create({ email, password, role }),
+      );
+      return {
+        ok: true,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        ok: true,
+        error: 'cannot createProblem02',
+      };
+    }
+  }
+  async updateProblem02({
+    id,
+    email,
+    password,
+    role,
+  }: UpdateProblem02Input): Promise<UpdateProblem02Output> {
+    try {
+      const problem02 = await this.problem02Repo.findOneOrFail(id);
+      if (email) problem02.email = email;
+      if (password) problem02.password = password;
+      if (role) problem02.role = role;
+      await this.problem02Repo.save(problem02);
+      return {
+        ok: true,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        ok: false,
+        error: 'cannot find problem02',
+      };
+    }
+  }
+  async deleteProblem02({
+    id,
+  }: DeleteProblem02Input): Promise<DeleteProblem02Output> {
+    try {
+      const problem02 = await this.problem02Repo.findOneOrFail(id);
+      await this.problem02Repo.softRemove({ id: problem02.id });
+    } catch (error) {
+      return {
+        ok: false,
+        error: 'cannot delete',
+      };
+    }
+  }
+
+  async loginProblem02({
+    email,
+    password,
+  }: LoginP02Input): Promise<LoginP02Output> {
+    try {
+      const problem02 = await this.problem02Repo.findOneOrFail({ email });
+      const correct = await problem02.checkPassword(password);
+      if (correct) {
+        const token = this.jwtService.sign({ id: problem02.id });
+        return {
+          ok: true,
+          token,
+        };
+      } else {
+        return {
+          ok: false,
+          error: 'wrong password',
+        };
+      }
+    } catch (error) {
+      return {
+        ok: false,
+        error: 'cannot find enrolled email',
+      };
+    }
   }
 }
