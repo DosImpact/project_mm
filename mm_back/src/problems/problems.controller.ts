@@ -3,10 +3,15 @@ import { CheckProblem01Input } from './dtos/p01/check-problem01.dto';
 import { CreateProblem01Input } from './dtos/p01/create-problem01.dto';
 import { DeleteProblem01Input } from './dtos/p01/delete-problem01.dto';
 import { UpdateProblem01Input } from './dtos/p01/update-problem01.dto';
+import { CreateProblem02Input } from './dtos/p02/create-p02.dto';
+import { DeleteProblem02Input } from './dtos/p02/delete-p02.dto';
+import { LoginProblem02Input } from './dtos/p02/login-p02.dto';
+import { Problem02Input } from './dtos/p02/p02.dto';
+import { UpdateProblem02Input } from './dtos/p02/update-p02.dto';
 import { ProblemsService } from './problems.service';
 
 @Controller('problems01')
-export class ProblemsController {
+export class Problem01Controller {
   constructor(private readonly problemsService: ProblemsService) {}
 
   @Get()
@@ -32,5 +37,38 @@ export class ProblemsController {
   @Post('/delete')
   deleteProblem01(@Body() deleteProblem01Input: DeleteProblem01Input) {
     return this.problemsService.deleteProblem01(deleteProblem01Input);
+  }
+}
+
+@Controller('problem02')
+export class Problem02Controller {
+  constructor(private readonly problemsService: ProblemsService) {}
+  // @Query
+
+  @Get()
+  getProblems02() {
+    return this.problemsService.getProblems02();
+  }
+  @Get('/:id')
+  getProblem02(@Body() problem02Input: Problem02Input) {
+    return this.problemsService.getProblem02(problem02Input);
+  }
+  // @Mutation
+  @Post('/create')
+  createProblem02(@Body() createProblem02Input: CreateProblem02Input) {
+    return this.problemsService.createProblem02(createProblem02Input);
+  }
+
+  @Post('/update')
+  UpdateProblem02(@Body() updateProblem02Input: UpdateProblem02Input) {
+    return this.problemsService.updateProblem02(updateProblem02Input);
+  }
+  @Post('/detete')
+  DeleteProblem02(@Body() deleteProblem02Input: DeleteProblem02Input) {
+    return this.problemsService.deleteProblem02(deleteProblem02Input);
+  }
+  @Post('/login')
+  LoginProblem02(@Body() lLoginProblem02Input: LoginProblem02Input) {
+    return this.problemsService.loginProblem02(lLoginProblem02Input);
   }
 }
