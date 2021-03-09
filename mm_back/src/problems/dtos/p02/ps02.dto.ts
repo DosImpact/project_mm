@@ -8,5 +8,5 @@ export class Problems02Input {}
 @ObjectType()
 export class Problems02Output extends CoreOutput {
   @Field((types) => [Problem02])
-  problem02: Problem02[];
+  problems02: Problem02[];
 }
