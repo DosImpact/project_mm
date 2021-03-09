@@ -29,7 +29,10 @@ import {
 } from './dtos/p02/delete-p02.dto';
 import { Problem01 } from './entities/problem01.entity';
 import { Problem02 } from './entities/problem02.entity';
-import { LoginP02Input, LoginP02Output } from './dtos/p02/login-p02.dto';
+import {
+  LoginProblem02Input,
+  LoginProblem02Output,
+} from './dtos/p02/login-p02.dto';
 import { JwtService } from 'src/jwt/jwt.service';
 
 /**
@@ -259,7 +262,7 @@ export class ProblemsService {
   async loginProblem02({
     email,
     password,
-  }: LoginP02Input): Promise<LoginP02Output> {
+  }: LoginProblem02Input): Promise<LoginProblem02Output> {
     try {
       const problem02 = await this.problem02Repo.findOneOrFail({ email });
       const correct = await problem02.checkPassword(password);
