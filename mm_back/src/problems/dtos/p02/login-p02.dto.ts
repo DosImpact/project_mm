@@ -3,7 +3,7 @@ import { IsEmail, IsString } from 'class-validator';
 import { CoreOutput } from 'src/common/dtos/output.dto';
 
 @InputType()
-export class LoginP02Input {
+export class LoginProblem02Input {
   @IsEmail()
   @Field((types) => String)
   email: string;
@@ -14,7 +14,7 @@ export class LoginP02Input {
 }
 
 @ObjectType()
-export class LoginP02Output extends CoreOutput {
+export class LoginProblem02Output extends CoreOutput {
   @IsString()
   @Field((types) => String, { nullable: true })
   token?: string;

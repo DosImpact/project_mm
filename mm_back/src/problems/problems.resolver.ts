@@ -25,11 +25,30 @@ import {
   UpdateProblem01Input,
   UpdateProblem01Output,
 } from './dtos/p01/update-problem01.dto';
+import {
+  CreateProblem02Input,
+  CreateProblem02Output,
+} from './dtos/p02/create-p02.dto';
+import {
+  DeleteProblem02Input,
+  DeleteProblem02Output,
+} from './dtos/p02/delete-p02.dto';
+import {
+  LoginProblem02Input,
+  LoginProblem02Output,
+} from './dtos/p02/login-p02.dto';
+import { Problem02Input, Problem02Output } from './dtos/p02/p02.dto';
+import { Problems02Input, Problems02Output } from './dtos/p02/ps02.dto';
+import {
+  UpdateProblem02Input,
+  UpdateProblem02Output,
+} from './dtos/p02/update-p02.dto';
 import { Problem01 } from './entities/problem01.entity';
+import { Problem02 } from './entities/problem02.entity';
 import { ProblemsService } from './problems.service';
 
 @Resolver((of) => Problem01)
-export class ProblemsResolver {
+export class Problem01Resolver {
   constructor(private readonly problemsService: ProblemsService) {}
 
   @ResolveField((returns) => Int)
@@ -71,5 +90,38 @@ export class ProblemsResolver {
     @Args('deleteProblem01Input') deleteProblem01Input: DeleteProblem01Input,
   ) {
     return this.problemsService.deleteProblem01(deleteProblem01Input);
+  }
+}
+
+@Resolver((of) => Problem02)
+export class Problem02Resolver {
+  constructor(private readonly problemsService: ProblemsService) {}
+  // @Query
+  @Query((returns) => Problem02Output)
+  getProblem02(@Args('input') problem02Input: Problem02Input) {
+    return this.problemsService.getProblem02(problem02Input);
+  }
+  @Query((returns) => Problems02Output)
+  getProblems02() {
+    return this.problemsService.getProblems02();
+  }
+  // @Mutation
+
+  @Mutation((returns) => CreateProblem02Output)
+  createProblem02(@Args('input') createProblem02Input: CreateProblem02Input) {
+    return this.problemsService.createProblem02(createProblem02Input);
+  }
+
+  @Mutation((returns) => UpdateProblem02Output)
+  UpdateProblem02(@Args('input') updateProblem02Input: UpdateProblem02Input) {
+    return this.problemsService.updateProblem02(updateProblem02Input);
+  }
+  @Mutation((returns) => DeleteProblem02Output)
+  DeleteProblem02(@Args('input') deleteProblem02Input: DeleteProblem02Input) {
+    return this.problemsService.deleteProblem02(deleteProblem02Input);
+  }
+  @Mutation((returns) => LoginProblem02Output)
+  LoginProblem02(@Args('input') lLoginProblem02Input: LoginProblem02Input) {
+    return this.problemsService.loginProblem02(lLoginProblem02Input);
   }
 }
