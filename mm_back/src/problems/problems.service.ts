@@ -197,7 +197,7 @@ export class ProblemsService {
       console.log(error);
       return {
         ok: false,
-        error: 'cannot find problem02',
+        error: 'cannot find problem 02',
         problems02: [],
       };
     }
