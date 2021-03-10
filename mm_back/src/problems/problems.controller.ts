@@ -40,7 +40,7 @@ export class Problem01Controller {
   }
 }
 
-@Controller('problem02')
+@Controller('problems02')
 export class Problem02Controller {
   constructor(private readonly problemsService: ProblemsService) {}
   // @Query
@@ -50,8 +50,8 @@ export class Problem02Controller {
     return this.problemsService.getProblems02();
   }
   @Get('/:id')
-  getProblem02(@Body() problem02Input: Problem02Input) {
-    return this.problemsService.getProblem02(problem02Input);
+  getProblem02(@Param('id') id: number) {
+    return this.problemsService.getProblem02({ id });
   }
   // @Mutation
   @Post('/create')
