@@ -47,6 +47,12 @@ import { UsersModule } from './users/users.module';
       playground: true, // 실서버 -> off
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'), // 생성된 schema 파일 확인 요망
       sortSchema: true, // 정렬
+      context: ({ req }) => {
+        console.log('GraphQLModule context checkin');
+        // req에서 꺼내서 표면에 올린다.
+        // context { req:{ problem02:{...}, ...} } => context { req:{...}, problem02:{...} }
+        return { problem02: req['problem02'] };
+      },
     }),
     JwtModule.forRoot({ privateKey: process.env.JWT_KEY }),
     UsersModule,
