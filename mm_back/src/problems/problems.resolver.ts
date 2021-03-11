@@ -27,6 +27,10 @@ import {
   UpdateProblem01Output,
 } from './dtos/p01/update-problem01.dto';
 import {
+  CheckProblem02Input,
+  CheckProblem02Output,
+} from './dtos/p02/check-p02.dto ';
+import {
   CreateProblem02Input,
   CreateProblem02Output,
 } from './dtos/p02/create-p02.dto';
@@ -129,5 +133,9 @@ export class Problem02Resolver {
   @Mutation((returns) => LoginProblem02Output)
   LoginProblem02(@Args('input') lLoginProblem02Input: LoginProblem02Input) {
     return this.problemsService.loginProblem02(lLoginProblem02Input);
+  }
+  @Mutation((returns) => CheckProblem02Output)
+  CheckProblem02(@AuthProblem02() problem02: Problem02) {
+    return this.problemsService.checkProblem02({ problem02 });
   }
 }

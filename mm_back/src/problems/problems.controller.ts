@@ -48,9 +48,7 @@ export class Problem02Controller {
   // @Query
 
   @Get()
-  getProblems02(@AuthProblem02() problem02: Problem02) {
-    console.log('REST API GET problem02 :', problem02);
-
+  getProblems02() {
     return this.problemsService.getProblems02();
   }
   @Get('/:id')
@@ -74,5 +72,9 @@ export class Problem02Controller {
   @Post('/login')
   LoginProblem02(@Body() lLoginProblem02Input: LoginProblem02Input) {
     return this.problemsService.loginProblem02(lLoginProblem02Input);
+  }
+  @Post('/check')
+  CheckProblem02(@AuthProblem02() problem02: Problem02) {
+    return this.problemsService.checkProblem02({ problem02 });
   }
 }

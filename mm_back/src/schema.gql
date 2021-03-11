@@ -25,6 +25,12 @@ type CheckProblem01Output {
   ok: Boolean!
 }
 
+type CheckProblem02Output {
+  error: String
+  flag: String
+  ok: Boolean!
+}
+
 input CreateProblem01Input {
   answer: AnswerInputType!
   subTitle: String
@@ -82,6 +88,7 @@ type LoginProblem02Output {
 }
 
 type Mutation {
+  CheckProblem02: CheckProblem02Output!
   DeleteProblem01(deleteProblem01Input: DeleteProblem01Input!): DeleteProblem01Output!
   DeleteProblem02(input: DeleteProblem02Input!): DeleteProblem02Output!
   LoginProblem02(input: LoginProblem02Input!): LoginProblem02Output!
