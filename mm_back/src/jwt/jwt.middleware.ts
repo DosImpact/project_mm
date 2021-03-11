@@ -10,6 +10,7 @@ export class Problem02MiddleWare implements NestMiddleware {
     private readonly problemsService: ProblemsService,
   ) {}
   async use(req: Request, res: Response, next: NextFunction) {
+    console.log('Problem02MiddleWare check in');
     if ('my-jwt' in req.headers) {
       const token = req.headers['my-jwt'];
       try {

@@ -1,5 +1,6 @@
 import {
   Args,
+  Context,
   Int,
   Mutation,
   Parent,
@@ -102,7 +103,9 @@ export class Problem02Resolver {
     return this.problemsService.getProblem02(problem02Input);
   }
   @Query((returns) => Problems02Output)
-  getProblems02() {
+  getProblems02(@Context() context) {
+    console.log('getProblems02 context: check in ', context['problem02']);
+
     return this.problemsService.getProblems02();
   }
   // @Mutation
