@@ -46,6 +46,7 @@ import {
 } from './dtos/p02/update-p02.dto';
 import { Problem01 } from './entities/problem01.entity';
 import { Problem02 } from './entities/problem02.entity';
+import { AuthProblem02 } from './problems.decorator';
 import { ProblemsService } from './problems.service';
 
 @Resolver((of) => Problem01)
@@ -103,8 +104,10 @@ export class Problem02Resolver {
     return this.problemsService.getProblem02(problem02Input);
   }
   @Query((returns) => Problems02Output)
-  getProblems02(@Context() context) {
-    console.log('getProblems02 context: check in ', context['problem02']);
+  getProblems02(@AuthProblem02() problem02: Problem02) {
+    console.log('getProblems02 context: check in ');
+    // @Context() context,
+    // console.log(context['problem02'],);
 
     return this.problemsService.getProblems02();
   }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Headers, Param, Post } from '@nestjs/common';
 import { CheckProblem01Input } from './dtos/p01/check-problem01.dto';
 import { CreateProblem01Input } from './dtos/p01/create-problem01.dto';
 import { DeleteProblem01Input } from './dtos/p01/delete-problem01.dto';
@@ -8,6 +8,8 @@ import { DeleteProblem02Input } from './dtos/p02/delete-p02.dto';
 import { LoginProblem02Input } from './dtos/p02/login-p02.dto';
 import { Problem02Input } from './dtos/p02/p02.dto';
 import { UpdateProblem02Input } from './dtos/p02/update-p02.dto';
+import { Problem02 } from './entities/problem02.entity';
+import { AuthProblem02 } from './problems.decorator';
 import { ProblemsService } from './problems.service';
 
 @Controller('problems01')
@@ -46,7 +48,9 @@ export class Problem02Controller {
   // @Query
 
   @Get()
-  getProblems02() {
+  getProblems02(@AuthProblem02() problem02: Problem02) {
+    console.log('REST API GET problem02 :', problem02);
+
     return this.problemsService.getProblems02();
   }
   @Get('/:id')
