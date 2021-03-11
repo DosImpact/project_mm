@@ -34,6 +34,10 @@ import {
   LoginProblem02Output,
 } from './dtos/p02/login-p02.dto';
 import { JwtService } from 'src/jwt/jwt.service';
+import {
+  CheckProblem02Input,
+  CheckProblem02Output,
+} from './dtos/p02/check-p02.dto ';
 
 /**
  * ✅ @param read1
@@ -282,6 +286,23 @@ export class ProblemsService {
       return {
         ok: false,
         error: 'cannot find enrolled email',
+      };
+    }
+  }
+
+  async checkProblem02({
+    problem02,
+  }: CheckProblem02Input): Promise<CheckProblem02Output> {
+    try {
+      await this.problem02Repo.findOneOrFail(problem02.id);
+      return {
+        ok: true,
+        flag: 'winner winnder SW winner',
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        error: 'cannot find user info',
       };
     }
   }
