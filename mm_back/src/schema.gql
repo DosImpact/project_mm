@@ -2,6 +2,18 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+input AdderProblem03Input {
+  args: [String!]
+  filename: String!
+  inputs: [String!]
+}
+
+type AdderProblem03Output {
+  error: String
+  ok: Boolean!
+  result: [String!]
+}
+
 type Answer {
   answer: [String!]!
   isMultiple: Boolean!
@@ -161,6 +173,7 @@ type Problems02Output {
 }
 
 type Query {
+  AdderProblem03(input: AdderProblem03Input!): AdderProblem03Output!
   deluser: String!
   getProblem01(problem01Input: Problem01Input!): Problem01Output!
   getProblem02(input: Problem02Input!): Problem02Output!
