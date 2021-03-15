@@ -1,33 +1,40 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Global, Inject, Injectable } from '@nestjs/common';
 import { CONFIG_OPTIONS } from 'src/common/common.interface';
-import { PyShellModuleOptions } from './py-shell.interface';
+import {
+  ExePyInput,
+  ExePyOutput,
+  PyShellModuleOptions,
+} from './py-shell.interface';
 import { PythonShell } from 'python-shell';
+import { promisify } from 'util';
 
 @Injectable()
-export class pyShellService {
+export class PyShellService {
   constructor(
     @Inject(CONFIG_OPTIONS)
     private readonly config: PyShellModuleOptions,
   ) {
-    // const pyshell = new PythonShell('helloInf.py', {
-    //   ...config,
-    //   args: ['value1', 'value2', 'value3'],
-    // });
-    // // sends a message to the Python script via stdin
-    // pyshell.send('from node.js send 1');
-    // pyshell.send('from node.js send 2');
-    // pyshell.send('from node.js send 3');
-    // pyshell.on('message', function (message) {
-    //   // received a message sent from the Python script (a simple "print" statement)
-    //   console.log(message);
-    // });
-    // // end the input stream and allow the process to exit
-    // pyshell.end(function (err, code, signal) {
-    //   if (err) throw err;
-    //   console.log('The exit code was: ' + code);
-    //   console.log('The exit signal was: ' + signal);
-    //   console.log('finished');
-    // });
+    const msg: string[] = new Array<string>();
+    const pyShell = new PythonShell('argsExample.py', {
+      ...this.config,
+      args: ['args01', 'args02'],
+    });
+    // stdin
+    for (const ins of ['exins01', 'exins02']) {
+      pyShell.send(ins);
+    }
+    // print
+    pyShell.on('message', (message) => {
+      msg.push(message);
+    });
+    // fin
+    pyShell.end((err, code, signal) => {
+      if (err) return { error: err, ok: false };
+      return {
+        ok: true,
+        result: msg,
+      };
+    });
   }
 
   async exeHelloPyWithArg(args: string[], inputs: string[]) {
@@ -38,8 +45,8 @@ export class pyShellService {
       pyShell.send(ins);
     }
     // print
-    pyShell.on('message', (msg) => {
-      msg.push(msg);
+    pyShell.on('message', (message) => {
+      msg.push(message);
     });
     // fin
     pyShell.end((err, code, signal) => {
@@ -49,5 +56,33 @@ export class pyShellService {
         result: msg,
       };
     });
+  }
+  // 30초 이상 걸리는 await 라면 ?
+  async exePy({ args, filename, inputs }: ExePyInput): Promise<ExePyOutput> {
+    const msg: string[] = new Array<string>();
+    const pyShell = new PythonShell(filename, { ...this.config, args });
+    const pyShellEndPromise = promisify(pyShell.end);
+    // stdin
+    for (const ins of inputs) {
+      pyShell.send(ins);
+    }
+    // print
+    pyShell.on('message', (msg) => {
+      msg.push(msg);
+    });
+    // fin
+    // pyShell.end((err, code, signal) => {
+    //   if (err) return { error: err, ok: false };
+    //   return {
+    //     ok: true,
+    //     result: msg,
+    //   };
+    // });
+    const res = await pyShellEndPromise();
+    console.log(res);
+    return {
+      ok: true,
+      result: msg,
+    };
   }
 }

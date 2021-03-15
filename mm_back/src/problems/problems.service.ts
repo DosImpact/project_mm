@@ -38,6 +38,11 @@ import {
   CheckProblem02Input,
   CheckProblem02Output,
 } from './dtos/p02/check-p02.dto ';
+import {
+  AdderProblem03Input,
+  AdderProblem03Output,
+} from './dtos/p03/adder-p03.dto';
+import { PyShellService } from 'src/pyshell/py-shell.service';
 
 /**
  * ✅ @param read1
@@ -58,6 +63,7 @@ export class ProblemsService {
     @InjectRepository(Problem02)
     private readonly problem02Repo: Repository<Problem02>,
     private readonly jwtService: JwtService,
+    private readonly pyShellService: PyShellService,
   ) {}
 
   async getProblem01({ id }: Problem01Input): Promise<Problem01Output> {
@@ -304,6 +310,15 @@ export class ProblemsService {
         ok: false,
         error: 'cannot find user info',
       };
+    }
+  }
+  async AdderProblem03(
+    AdderProblem03Input: AdderProblem03Input,
+  ): Promise<AdderProblem03Output> {
+    try {
+      return await this.pyShellService.exePy(AdderProblem03Input);
+    } catch (error) {
+      return { ok: false, error };
     }
   }
 }

@@ -48,6 +48,10 @@ import {
   UpdateProblem02Input,
   UpdateProblem02Output,
 } from './dtos/p02/update-p02.dto';
+import {
+  AdderProblem03Input,
+  AdderProblem03Output,
+} from './dtos/p03/adder-p03.dto';
 import { Problem01 } from './entities/problem01.entity';
 import { Problem02 } from './entities/problem02.entity';
 import { AuthProblem02 } from './problems.decorator';
@@ -137,5 +141,15 @@ export class Problem02Resolver {
   @Mutation((returns) => CheckProblem02Output)
   CheckProblem02(@AuthProblem02() problem02: Problem02) {
     return this.problemsService.checkProblem02({ problem02 });
+  }
+}
+
+@Resolver()
+export class Problem03Resolver {
+  constructor(private readonly problemsService: ProblemsService) {}
+
+  @Query((returns) => AdderProblem03Output)
+  AdderProblem03(@Args('input') adderProblem03Input: AdderProblem03Input) {
+    return this.problemsService.AdderProblem03(adderProblem03Input);
   }
 }
