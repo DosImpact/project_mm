@@ -14,6 +14,7 @@ import { JwtModule } from './jwt/jwt.module';
 import { Problem01 } from './problems/entities/problem01.entity';
 import { Problem02 } from './problems/entities/problem02.entity';
 import { ProblemsModule } from './problems/problems.module';
+import { PyShellModule } from './pyshell/py-shell.module';
 import { User } from './users/entities/user.entity';
 import { UsersModule } from './users/users.module';
 
@@ -55,6 +56,12 @@ import { UsersModule } from './users/users.module';
       },
     }),
     JwtModule.forRoot({ privateKey: process.env.JWT_KEY }),
+    PyShellModule.forRoot({
+      mode: 'text',
+      pythonPath: '/usr/bin/python',
+      pythonOptions: ['-u'], // get print results in real-time
+      scriptPath: 'py',
+    }),
     UsersModule,
     ProblemsModule,
   ],
