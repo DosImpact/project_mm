@@ -316,7 +316,12 @@ export class ProblemsService {
     AdderProblem03Input: AdderProblem03Input,
   ): Promise<AdderProblem03Output> {
     try {
-      return await this.pyShellService.exePy(AdderProblem03Input);
+      // API로 원하는 인자를 받았다.
+      // 해당 변수들로 실행시킬 일렬의 py들을 호출하자.
+      // 변수의 유효성 검사를 dto가 하지만, 부족한 부분을 보완할 수 있다.
+      // eg) 특정 파이썬 로직을 실행하고나서, DB를 요청후 반환 등 로직
+
+      return this.pyShellService.exePy(AdderProblem03Input);
     } catch (error) {
       return { ok: false, error };
     }
