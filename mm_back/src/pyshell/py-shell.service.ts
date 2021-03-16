@@ -12,30 +12,7 @@ export class PyShellService {
   constructor(
     @Inject(CONFIG_OPTIONS)
     private readonly config: PyShellModuleOptions,
-  ) {
-    const msg: string[] = new Array<string>();
-    const pyShell = new PythonShell('argsExample.py', {
-      ...this.config,
-      args: ['args01', 'args02'],
-    });
-    // stdin
-    for (const ins of ['exins01', 'exins02']) {
-      pyShell.send(ins);
-    }
-    // print
-    pyShell.on('message', (message) => {
-      msg.push(message);
-    });
-    // fin
-    pyShell.end((err, code, signal) => {
-      if (err) return { error: err, ok: false };
-      console.log('msg', msg);
-      return {
-        ok: true,
-        result: msg,
-      };
-    });
-  }
+  ) {}
   //
   async exeHelloPyWithArg(args: string[], inputs: string[]) {
     try {
@@ -110,19 +87,20 @@ export class PyShellService {
           pyShell.send(ins);
         }
         pyShell.on('message', (message) => {
-          outputs.push(message);
+          if (message) outputs.push(String(message).trim());
         });
         pyShell.end((err, code, signal) => {
           res({ sucess: true, result: outputs });
         });
 
         // 그외 예외 처리
-        pyShell.on('close', () => {
-          console.log('close event');
-          rej({ sucess: false, error: 'closed' });
-        });
+        // 정상 종료이여도 pyShell.end 이벤트랑 충돌
+        // pyShell.on('close', () => {
+        //   console.log('close event', outputs);
+        //   rej({ sucess: false, error: 'closed' });
+        // });
         pyShell.on('error', (error) => {
-          console.log('error event');
+          console.log('error event', outputs);
           rej({ sucess: false, error: error.message });
         });
         pyShell.on('stderr', (error) => {
