@@ -58,12 +58,12 @@ import { UsersModule } from './users/users.module';
     JwtModule.forRoot({ privateKey: process.env.JWT_KEY }),
     PyShellModule.forRoot({
       mode: 'text',
-      pythonPath: '/usr/bin/python',
+      pythonPath: process.env.PYTHON_PATH,
       pythonOptions: ['-u'], // get print results in real-time
       scriptPath: 'py',
     }),
     UsersModule,
-    ProblemsModule,
+     ProblemsModule,
   ],
 })
 export class AppModule implements NestModule {
