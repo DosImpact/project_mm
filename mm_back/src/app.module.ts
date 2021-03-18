@@ -15,7 +15,9 @@ import { Problem01 } from './problems/entities/problem01.entity';
 import { Problem02 } from './problems/entities/problem02.entity';
 import { ProblemsModule } from './problems/problems.module';
 import { PyShellModule } from './pyshell/py-shell.module';
+import { Profile } from './users/entities/profile.entity';
 import { User } from './users/entities/user.entity';
+import { Verification } from './users/entities/verification.entity';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -40,7 +42,7 @@ import { UsersModule } from './users/users.module';
       url: process.env.DATABASE_URL,
       synchronize: process.env.NODE_ENV === 'dev' ? true : false,
       logging: false,
-      entities: [User, Problem01, Problem02],
+      entities: [User, Profile, Verification, Problem01, Problem02],
     }),
     GraphQLModule.forRoot({
       installSubscriptionHandlers: true,
@@ -63,7 +65,7 @@ import { UsersModule } from './users/users.module';
       scriptPath: 'py',
     }),
     UsersModule,
-     ProblemsModule,
+    ProblemsModule,
   ],
 })
 export class AppModule implements NestModule {
