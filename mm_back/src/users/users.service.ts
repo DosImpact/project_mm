@@ -18,7 +18,7 @@ export class UsersService {
     try {
       const user = await this.usersRepo.save(
         this.usersRepo.create({
-          name: 'testUser',
+          username: 'testUser',
         }),
       );
       console.log('result user', user);
@@ -30,7 +30,7 @@ export class UsersService {
   async deleteUser() {
     try {
       const user = await this.usersRepo.findOne({
-        where: { name: 'testUser' },
+        where: { username: 'testUser' },
       });
       const res = await this.usersRepo.softRemove(user);
       console.log(res);
