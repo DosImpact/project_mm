@@ -14,28 +14,14 @@ export class UsersService {
     logger.debug('UsersService init');
   }
 
-  async createUser() {
-    try {
-      const user = await this.usersRepo.save(
-        this.usersRepo.create({
-          username: 'testUser',
-        }),
-      );
-      console.log('result user', user);
-    } catch (error) {
-      console.log('cannot create user');
-    }
-  }
+  // Query | 아이디로,이메일로  단일 유저 , 이메일로 여러 유저 검색 ( like 사용 )
+  async getUserById() {}
+  async getUserByEmail() {}
+  async getUsersByTerms() {}
 
-  async deleteUser() {
-    try {
-      const user = await this.usersRepo.findOne({
-        where: { username: 'testUser' },
-      });
-      const res = await this.usersRepo.softRemove(user);
-      console.log(res);
-    } catch (error) {
-      console.log('cannot delete User');
-    }
-  }
+  // Mutation
+
+  async createUser() {}
+  async updateUser() {}
+  async deleteUser() {}
 }
