@@ -18,6 +18,6 @@ export class User extends CoreEntity {
   @Column({ unique: true, nullable: true })
   email: string;
 
-  @OneToOne(() => Profile, (profile) => profile.user, { cascade: true })
+  @OneToOne(() => Profile, (profile) => profile.user)
   profile: Profile;
 }

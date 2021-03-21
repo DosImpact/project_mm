@@ -21,7 +21,7 @@ export class Profile extends CoreEntity {
 
   // relation
 
-  @OneToOne(() => Profile, (profile) => profile.user)
+  @OneToOne(() => Profile, (profile) => profile.user, { onDelete: 'CASCADE' })
   @JoinColumn()
   user: User;
 }
