@@ -1,10 +1,13 @@
 import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
+import { IsNumber, IsString } from 'class-validator';
 
 @InputType()
 export class SearchInput {
+  @IsString()
   @Field(() => String)
   term: string;
 
+  @IsNumber()
   @Field(() => Int, { defaultValue: 1, nullable: true })
   page?: number;
 }
