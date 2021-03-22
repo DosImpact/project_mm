@@ -8,16 +8,4 @@ export class UsersResolver {
     private readonly config: ConfigService,
     private readonly usersService: UsersService,
   ) {}
-
-  @Query((returns) => String)
-  async me() {
-    await this.usersService.createUser();
-    return `hello ${this.config.get('MAINTAINER')}`;
-  }
-
-  @Query((returns) => String)
-  async deluser() {
-    await this.usersService.deleteUser();
-    return 'ok';
-  }
 }
