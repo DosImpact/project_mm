@@ -174,12 +174,10 @@ type Problems02Output {
 
 type Query {
   AdderProblem03(input: AdderProblem03Input!): AdderProblem03Output!
-  deluser: String!
   getProblem01(problem01Input: Problem01Input!): Problem01Output!
   getProblem02(input: Problem02Input!): Problem02Output!
   getProblems01: Problems01Output!
   getProblems02: Problems02Output!
-  me: String!
 }
 
 input UpdateProblem01Input {
