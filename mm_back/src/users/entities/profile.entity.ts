@@ -1,4 +1,9 @@
-import { Field, InputType, ObjectType } from '@nestjs/graphql';
+import {
+  Field,
+  InputType,
+  ObjectType,
+  registerEnumType,
+} from '@nestjs/graphql';
 import { CoreEntity } from 'src/common/entities/core.entity';
 import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 import { User } from './user.entity';
@@ -8,6 +13,8 @@ export enum Bio {
   Woman = 'Woman',
   NoComment = 'NoComment',
 }
+
+registerEnumType(Bio, { name: 'Bio' });
 
 @InputType({ isAbstract: true })
 @ObjectType()
