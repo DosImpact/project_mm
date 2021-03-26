@@ -9,6 +9,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
 import { join } from 'path';
+import { CommonModule } from './common/common.module';
 import { JwtMiddleWare, Problem02MiddleWare } from './jwt/jwt.middleware';
 import { JwtModule } from './jwt/jwt.module';
 import { Problem01 } from './problems/entities/problem01.entity';
@@ -57,6 +58,7 @@ import { UsersModule } from './users/users.module';
         return { problem02: req['problem02'] };
       },
     }),
+    CommonModule,
     JwtModule.forRoot({ privateKey: process.env.JWT_KEY }),
     PyShellModule.forRoot({
       mode: 'text',
