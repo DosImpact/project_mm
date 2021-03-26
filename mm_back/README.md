@@ -59,9 +59,11 @@ yarn start:dev
 yarn test:cov
 ```
 
-## 모듈
+## Module - 개발 계획 (Notion)
 
-#### UserModule
+[https://www.notion.so/momo-b39ba2d95a384acc89e700f4b0d96355](https://www.notion.so/momo-b39ba2d95a384acc89e700f4b0d96355)
+
+</details>
 
 ## Author
 
@@ -77,3 +79,7 @@ Give a ⭐️ if this project helped you!
 ---
 
 _This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
+
+```
+
+```
