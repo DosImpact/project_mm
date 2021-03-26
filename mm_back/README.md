@@ -10,6 +10,21 @@ PORT = 4000 # Heroku 가 제공하는 env key와 동일하게 설정
 
 ### modules
 
+- pyshell
+
+```
+파이썬 실행 모듈
+큐잉 모듈
+pubsub 모듈
+
+알고리즘 :
+
+1작업 등록, REST API 요청-pub(등록)-큐(등록)-DB(등록 userid,taskid,result)
+2작업 시작|진행, 큐(실행)-이벤트리슨(pub(진행중))
+3작업 종료|애러, 큐(종료)-이벤트리슨(pub(종료)) - DB(등록,)
+
+```
+
 - common
 
 ```

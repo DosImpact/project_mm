@@ -1,3 +1,4 @@
+import { BullModule } from '@nestjs/bull';
 import {
   MiddlewareConsumer,
   Module,
@@ -15,6 +16,7 @@ import { JwtModule } from './jwt/jwt.module';
 import { Problem01 } from './problems/entities/problem01.entity';
 import { Problem02 } from './problems/entities/problem02.entity';
 import { ProblemsModule } from './problems/problems.module';
+import { PyTask } from './pyshell/entities/py-task.dto';
 import { PyShellModule } from './pyshell/py-shell.module';
 import { Profile } from './users/entities/profile.entity';
 import { User } from './users/entities/user.entity';
@@ -33,7 +35,15 @@ import { UsersModule } from './users/users.module';
         DATABASE_URL: Joi.string().required(),
         PORT: Joi.number().required(),
         JWT_KEY: Joi.string().required(),
+        REDIS_HOST: Joi.string().required(),
+        REDIS_PORT: Joi.number().required(),
       }),
+    }),
+    BullModule.forRoot({
+      redis: {
+        host: process.env.REDIS_HOST,
+        port: +process.env.REDIS_PORT,
+      },
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -43,7 +53,7 @@ import { UsersModule } from './users/users.module';
       url: process.env.DATABASE_URL,
       synchronize: process.env.NODE_ENV === 'dev' ? true : false,
       logging: false,
-      entities: [User, Profile, Verification, Problem01, Problem02],
+      entities: [User, Profile, Verification, PyTask, Problem01, Problem02],
     }),
     GraphQLModule.forRoot({
       installSubscriptionHandlers: true,
