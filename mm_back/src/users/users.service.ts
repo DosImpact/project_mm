@@ -1,4 +1,10 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { JwtService } from '@/jwt/jwt.service';
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
@@ -6,6 +12,8 @@ import {
   CreateUserOutput,
   DeleteUserInput,
   DeleteUserOutput,
+  LoginUserInput,
+  LoginUserOuput,
   UpdateUserInput,
   UpdateUserOutput,
 } from './dtos/mutation-user.dtos';
@@ -35,6 +43,7 @@ export class UsersService {
     private readonly profilesRepo: Repository<Profile>,
     @InjectRepository(Verification)
     private readonly VerificationsRepo: Repository<Verification>,
+    private readonly jwtService: JwtService,
   ) {
     logger.debug('UsersService init');
   }
@@ -75,6 +84,41 @@ export class UsersService {
     } catch (error) {}
   }
 
+  async loginUser({
+    email,
+    password,
+  }: LoginUserInput): Promise<LoginUserOuput> {
+    try {
+      const user = await this.usersRepo.findOne({ where: { email } });
+      if (!user) {
+        return {
+          ok: false,
+          error: 'cannot find email',
+        };
+      }
+      const isCorrect = await user.checkPassword(password);
+      if (!isCorrect) {
+        return {
+          ok: false,
+          error: 'password is wrong',
+        };
+      } else {
+        const token = this.jwtService.sign({ id: user.id });
+        return {
+          ok: true,
+          token,
+        };
+      }
+    } catch (error) {
+      return {
+        ok: false,
+        error: 'cannot login user',
+      };
+    }
+  }
+
+  async findPasswordUser() {}
+
   // Mutation
   async createUser(
     createUserInput: CreateUserInput,
@@ -85,9 +129,11 @@ export class UsersService {
         email: createUserInput.email,
       });
       if (exist) return { ok: false, error: 'email already taken' };
-      const user = await this.usersRepo.save(
-        this.usersRepo.create(createUserInput),
-      );
+      const user = this.usersRepo.create(createUserInput);
+      const profile = await this.profilesRepo.save(this.profilesRepo.create());
+      user.profile = profile;
+      await this.usersRepo.save(user);
+
       return {
         ok: true,
         user,
@@ -105,10 +151,6 @@ export class UsersService {
       if (updatedUser.email) user.email = updatedUser.email;
       if (updatedUser.username) user.username = updatedUser.username;
       if (updatedUser.password) user.password = updatedUser.password;
-      // profile객체 업데이트도 필요
-      if (updatedUser.profile) {
-        await this.UpdateProfile({ user, ...updatedUser.profile });
-      }
     } catch (error) {
       return {
         ok: false,
@@ -130,20 +172,26 @@ export class UsersService {
     }
   }
 
-  // Profile Updaet
   async UpdateProfile({
     bio,
-    user,
+    email,
   }: UpdateProfileInput): Promise<UpdateProfileOutput> {
     try {
-      const profile = await this.profilesRepo.findOneOrFail({
-        where: { user },
+      const user = await this.usersRepo.findOneOrFail({
+        where: { email },
+        relations: ['profile'],
       });
-      if (bio) profile.bio = bio;
-      await this.profilesRepo.save(profile);
+      if (!user.profile) {
+        return { ok: false, error: 'profile not exits' };
+      }
+      const userProfile = user.profile;
+      if (bio) {
+        userProfile.bio = bio;
+      }
+      await this.profilesRepo.save(userProfile);
       return {
         ok: true,
-        profile,
+        profile: userProfile,
       };
     } catch (error) {
       return {

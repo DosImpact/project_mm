@@ -26,12 +26,6 @@ input AnswerInputType {
   isNumber: Boolean!
 }
 
-enum Bio {
-  Man
-  NoComment
-  Woman
-}
-
 input CheckProblem01Input {
   answer: [String!]!
   id: Int!
@@ -71,6 +65,12 @@ type CreateProblem02Output {
   ok: Boolean!
 }
 
+input CreateUserInput {
+  email: String!
+  password: String!
+  username: String
+}
+
 type CreateUserOutput {
   error: String
   ok: Boolean!
@@ -100,16 +100,28 @@ type DeleteProblem02Output {
   ok: Boolean!
 }
 
+input DeleteUserInput {
+  id: String!
+}
+
 type DeleteUserOutput {
   error: String
   ok: Boolean!
   user: User
 }
 
+input GetUserByEmailInput {
+  email: String!
+}
+
 type GetUserByEmailOutput {
   error: String
   ok: Boolean!
   user: User
+}
+
+input GetUserByIdInput {
+  id: String!
 }
 
 type GetUserByIdOutput {
@@ -139,9 +151,9 @@ type Mutation {
   checkProblem01(checkProblem01Input: CheckProblem01Input!): CheckProblem01Output!
   createProblem01(createProblem01Input: CreateProblem01Input!): CreateProblem01Output!
   createProblem02(input: CreateProblem02Input!): CreateProblem02Output!
-  createUser: CreateUserOutput!
-  deleteUser: DeleteUserOutput!
-  updateUser: UpdateUserOutput!
+  createUser(input: CreateUserInput!): CreateUserOutput!
+  deleteUser(input: DeleteUserInput!): DeleteUserOutput!
+  updateUser(input: UpdateUserInput!): UpdateUserOutput!
 }
 
 enum P02UserRole {
@@ -205,24 +217,20 @@ type Problems02Output {
   problems02: [Problem02!]!
 }
 
-type Profile {
-  bio: Bio!
-  createdAt: DateTime!
-  deletedAt: DateTime!
-  id: Float!
-  updatedAt: DateTime!
-  v: Float!
-}
-
 type Query {
   AdderProblem03(input: AdderProblem03Input!): AdderProblem03Output!
   getProblem01(problem01Input: Problem01Input!): Problem01Output!
   getProblem02(input: Problem02Input!): Problem02Output!
   getProblems01: Problems01Output!
   getProblems02: Problems02Output!
-  getUserByEmail: GetUserByEmailOutput!
-  getUserById: GetUserByIdOutput!
-  searchUser: SearchUserOutput!
+  getUserByEmail(input: GetUserByEmailInput!): GetUserByEmailOutput!
+  getUserById(input: GetUserByIdInput!): GetUserByIdOutput!
+  searchUser(input: SearchUserInput!): SearchUserOutput!
+}
+
+input SearchUserInput {
+  page: Int = 1
+  term: String!
 }
 
 type SearchUserOutput {
@@ -256,6 +264,13 @@ input UpdateProblem02Input {
 type UpdateProblem02Output {
   error: String
   ok: Boolean!
+}
+
+input UpdateUserInput {
+  email: String
+  id: String!
+  password: String
+  username: String
 }
 
 type UpdateUserOutput {

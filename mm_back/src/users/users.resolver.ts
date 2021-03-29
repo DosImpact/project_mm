@@ -1,5 +1,5 @@
 import { ConfigService } from '@nestjs/config';
-import { Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   CreateUserInput,
   CreateUserOutput,
@@ -25,33 +25,35 @@ export class UsersResolver {
 
   // user - query
   @Query((returns) => SearchUserOutput)
-  async searchUser(searchUserInput: SearchUserInput) {
+  async searchUser(@Args('input') searchUserInput: SearchUserInput) {
     return this.usersService.searchUsers(searchUserInput);
   }
 
   @Query((returns) => GetUserByIdOutput)
-  async getUserById(getUserByIdInput: GetUserByIdInput) {
+  async getUserById(@Args('input') getUserByIdInput: GetUserByIdInput) {
     return this.usersService.getUserById(getUserByIdInput);
   }
 
   @Query((returns) => GetUserByEmailOutput)
-  async getUserByEmail(getUserByEmailInput: GetUserByEmailInput) {
+  async getUserByEmail(
+    @Args('input') getUserByEmailInput: GetUserByEmailInput,
+  ) {
     return this.usersService.getUserByEmail(getUserByEmailInput);
   }
 
   // user - Mutation
   @Mutation((returns) => CreateUserOutput)
-  async createUser(createUserInput: CreateUserInput) {
+  async createUser(@Args('input') createUserInput: CreateUserInput) {
     return this.usersService.createUser(createUserInput);
   }
 
   @Mutation((returns) => UpdateUserOutput)
-  async updateUser(updateUserInput: UpdateUserInput) {
+  async updateUser(@Args('input') updateUserInput: UpdateUserInput) {
     return this.usersService.updateUser(updateUserInput);
   }
 
   @Mutation((returns) => DeleteUserOutput)
-  async deleteUser(deleteUserInput: DeleteUserInput) {
+  async deleteUser(@Args('input') deleteUserInput: DeleteUserInput) {
     return this.usersService.deleteUser(deleteUserInput);
   }
 }
