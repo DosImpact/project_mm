@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { CONFIG_OPTIONS } from 'src/common/common.interface';
 import {
   ExePyInput,
   ExePyOutput,
   PyShellModuleOptions,
+  CONFIG_OPTIONS,
 } from './py-shell.interface';
 import { PythonShell } from 'python-shell';
 

@@ -1,4 +1,4 @@
-import { PUB_SUB } from '@/common/common.interface';
+import { PUB_SUB } from '@/pubsub/pubsub.interface';
 import { Inject, Injectable } from '@nestjs/common';
 import { PubSub } from 'graphql-subscriptions';
 

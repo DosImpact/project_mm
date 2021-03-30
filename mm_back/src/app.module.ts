@@ -21,6 +21,7 @@ import { SharedNote } from './nusers/sharedNote.entity';
 import { Problem01 } from './problems/entities/problem01.entity';
 import { Problem02 } from './problems/entities/problem02.entity';
 import { ProblemsModule } from './problems/problems.module';
+import { PubsubModule } from './pubsub/pubsub.module';
 import { PyTask } from './pyshell/entities/py-task.dto';
 import { PyShellModule } from './pyshell/py-shell.module';
 import { Profile } from './users/entities/profile.entity';
@@ -85,6 +86,7 @@ import { UsersModule } from './users/users.module';
       },
     }),
     CommonModule,
+    PubsubModule,
     JwtModule.forRoot({ privateKey: process.env.JWT_KEY }),
     PyShellModule.forRoot({
       mode: 'text',

@@ -1,7 +1,6 @@
 import { BullModule } from '@nestjs/bull';
 import { DynamicModule, Global, Module } from '@nestjs/common';
-import { CONFIG_OPTIONS } from 'src/common/common.interface';
-import { PyShellModuleOptions } from './py-shell.interface';
+import { CONFIG_OPTIONS, PyShellModuleOptions } from './py-shell.interface';
 import { PyShellService } from './py-shell.service';
 
 @Module({})

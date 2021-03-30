@@ -1,5 +1,7 @@
 import { Options } from 'python-shell';
 
+export const CONFIG_OPTIONS = 'CONFIG_OPTIONS';
+
 export interface PyShellModuleOptions extends Options {
   maintainer?: string;
 }
