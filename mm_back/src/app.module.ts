@@ -86,7 +86,10 @@ import { UsersModule } from './users/users.module';
       },
     }),
     CommonModule,
-    PubsubModule,
+    PubsubModule.forRoot({
+      redis_host: process.env.REDIS_HOST,
+      redis_port: +process.env.REDIS_PORT,
+    }),
     JwtModule.forRoot({ privateKey: process.env.JWT_KEY }),
     PyShellModule.forRoot({
       mode: 'text',
