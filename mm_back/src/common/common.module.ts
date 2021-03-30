@@ -1,5 +1,5 @@
 import { Global, Module } from '@nestjs/common';
-// import { PubSub } from 'graphql-subscriptions';
+import { PubSub } from 'graphql-subscriptions';
 import { RedisPubSub } from 'graphql-redis-subscriptions';
 import { PUB_SUB } from './common.interface';
 
@@ -8,12 +8,13 @@ import { PUB_SUB } from './common.interface';
   providers: [
     {
       provide: PUB_SUB,
-      useValue: new RedisPubSub({
-        connection: {
-          port: +process.env.REDIS_PORT,
-          host: process.env.REDIS_HOST,
-        },
-      }),
+      useValue: new PubSub(),
+      // useValue: new RedisPubSub({
+      //   connection: {
+      //     port: +process.env.REDIS_PORT,
+      //     host: process.env.REDIS_HOST,
+      //   },
+      // }),
     },
   ],
 })

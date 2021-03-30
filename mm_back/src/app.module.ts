@@ -14,6 +14,10 @@ import { AudioModule } from './audio/audio.module';
 import { CommonModule } from './common/common.module';
 import { JwtMiddleWare, Problem02MiddleWare } from './jwt/jwt.middleware';
 import { JwtModule } from './jwt/jwt.module';
+import { Note } from './nusers/note.entity';
+import { NoteModule } from './nusers/note.module';
+import { NUser } from './nusers/nuser.entity';
+import { SharedNote } from './nusers/sharedNote.entity';
 import { Problem01 } from './problems/entities/problem01.entity';
 import { Problem02 } from './problems/entities/problem02.entity';
 import { ProblemsModule } from './problems/problems.module';
@@ -55,7 +59,17 @@ import { UsersModule } from './users/users.module';
       url: process.env.DATABASE_URL,
       synchronize: process.env.NODE_ENV === 'dev' ? true : false,
       logging: false,
-      entities: [User, Profile, Verification, PyTask, Problem01, Problem02],
+      entities: [
+        User,
+        Profile,
+        Verification,
+        PyTask,
+        Problem01,
+        Problem02,
+        Note,
+        SharedNote,
+        NUser,
+      ],
     }),
     GraphQLModule.forRoot({
       installSubscriptionHandlers: true,
@@ -80,6 +94,7 @@ import { UsersModule } from './users/users.module';
     }),
     UsersModule,
     ProblemsModule,
+    NoteModule,
   ],
 })
 export class AppModule implements NestModule {
