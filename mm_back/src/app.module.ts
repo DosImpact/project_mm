@@ -27,6 +27,7 @@ import { Profile } from './users/entities/profile.entity';
 import { User } from './users/entities/user.entity';
 import { Verification } from './users/entities/verification.entity';
 import { UsersModule } from './users/users.module';
+import { UploadsModule } from './uploads/uploads.module';
 
 @Module({
   imports: [
@@ -42,6 +43,9 @@ import { UsersModule } from './users/users.module';
         JWT_KEY: Joi.string().required(),
         REDIS_HOST: Joi.string().required(),
         REDIS_PORT: Joi.number().required(),
+        AWS_S3_BUCKET_NAME: Joi.string(),
+        AWS_S3_ACCESS_KEY: Joi.string(),
+        AWS_S3_SECRET_ACCESS_KEY: Joi.string(),
       }),
     }),
     BullModule.forRoot({
@@ -102,6 +106,7 @@ import { UsersModule } from './users/users.module';
     UsersModule,
     ProblemsModule,
     NoteModule,
+    UploadsModule,
   ],
 })
 export class AppModule implements NestModule {

@@ -7,8 +7,6 @@ export class ProducerService {
   constructor(
     @InjectQueue('python')
     private readonly pythonQ: Queue,
-    @InjectQueue('todo')
-    private readonly todoQ: Queue,
     @InjectQueue('counter')
     private readonly counterQ: Queue,
   ) {}
