@@ -7,25 +7,17 @@ import {
 import { Logger } from '@nestjs/common';
 import { Job } from 'bull';
 
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
 
-// audio 라는 큐 프로세서 생성
-@Processor('audio')
-export class AudioProcessor {
-  private readonly logger = new Logger(AudioProcessor.name);
+@Processor('python')
+export class PythonProcessor {
+  private readonly logger = new Logger(PythonProcessor.name);
 
-  @Process('transcode') // transcode 라는 job 이름 생성
-  async handleTranscode(job: Job) {
-    this.logger.debug('Start transcoding...');
-    // progress 진행도 기록 가능
-    let progress = 0;
-    for (let i = 0; i < 100; i++) {
-      await sleep(20);
-      progress += 10;
-      job.progress(progress);
-    }
-    this.logger.debug(job.data);
-    this.logger.debug('Transcoding completed');
+  @Process('example')
+  async exampleTask(job: Job) {
+    this.logger.debug(`[example start]`);
+    await sleep(500);
+    this.logger.debug(`✔[example end]`);
   }
 
   // event-listeners 프로세스의 이벤트가 실행되면 정보 출력

@@ -10,7 +10,6 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
 import { join } from 'path';
-import { AudioModule } from './audio/audio.module';
 import { CommonModule } from './common/common.module';
 import { JwtMiddleWare, Problem02MiddleWare } from './jwt/jwt.middleware';
 import { JwtModule } from './jwt/jwt.module';
@@ -54,7 +53,6 @@ import { UsersModule } from './users/users.module';
         }),
       },
     }),
-    AudioModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       ssl: {

@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import { ProcessorModule } from './processor.module';
 
+// MSA - 2 consumer
 @Module({
   imports: [
     ConfigModule.forRoot({

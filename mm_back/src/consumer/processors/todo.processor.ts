@@ -12,6 +12,6 @@ export class TodoProcessor {
   async handleJobs(job: Job) {
     this.logger.debug('[todo] doit start ....');
     await sleep(500);
-    this.logger.debug('[todo] doit end ✔');
+    this.logger.debug('✔[todo] doit end');
   }
 }
