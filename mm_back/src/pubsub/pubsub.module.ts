@@ -9,6 +9,7 @@ export class PubsubModule {
   static forRoot({
     redis_host,
     redis_port,
+    redis_password,
   }: PubsubModuleOptions): DynamicModule {
     return {
       module: PubsubModule,
@@ -20,6 +21,7 @@ export class PubsubModule {
             connection: {
               host: redis_host,
               port: redis_port,
+              ...(redis_password && { password: redis_password }),
             },
           }), //useValue: new PubSub()
         },

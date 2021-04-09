@@ -49,6 +49,9 @@ import { UsersModule } from './users/users.module';
       redis: {
         host: process.env.REDIS_HOST,
         port: +process.env.REDIS_PORT,
+        ...(process.env.REDIS_PASSWORD && {
+          password: process.env.REDIS_PASSWORD,
+        }),
       },
     }),
     AudioModule,
@@ -89,6 +92,7 @@ import { UsersModule } from './users/users.module';
     PubsubModule.forRoot({
       redis_host: process.env.REDIS_HOST,
       redis_port: +process.env.REDIS_PORT,
+      redis_password: process.env.REDIS_PASSWORD,
     }),
     JwtModule.forRoot({ privateKey: process.env.JWT_KEY }),
     PyShellModule.forRoot({
