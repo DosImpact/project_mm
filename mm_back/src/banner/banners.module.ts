@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { BannersController } from './banners.controller';
 
 /**
  베너 모듈 
@@ -13,5 +14,7 @@ import { Module } from '@nestjs/common';
  -삭제 API
  
  */
-@Module({})
+@Module({
+  controllers: [BannersController],
+})
 export class BannersModule {}

@@ -28,6 +28,7 @@ import { User } from './users/entities/user.entity';
 import { Verification } from './users/entities/verification.entity';
 import { UsersModule } from './users/users.module';
 import { UploadsModule } from './uploads/uploads.module';
+import { BannersModule } from './banner/banners.module';
 
 @Module({
   imports: [
@@ -107,6 +108,7 @@ import { UploadsModule } from './uploads/uploads.module';
     ProblemsModule,
     NoteModule,
     UploadsModule,
+    BannersModule,
   ],
 })
 export class AppModule implements NestModule {
