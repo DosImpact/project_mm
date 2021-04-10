@@ -18,35 +18,7 @@ export class UploadService {
       },
       region: 'ap-northeast-2',
     });
-    const test = async () => {
-      // read bucket list
-      // const res1 = await new AWS.S3().listBuckets().promise();
-      // console.log(res1);
-      // create bucket
-      // const res2 = await new AWS.S3()
-      //   .createBucket({
-      //     Bucket: 'mmdelmebucket',
-      //   })
-      //   .promise();
-      //   //{ Location: 'http://mmdelmebucket.s3.amazonaws.com/' }
-      // console.log(res2);
-      // read object list
-      // const res3 = await new AWS.S3()
-      //   .listObjects({
-      //     Bucket: 'mmuzawyho6ib',
-      //   })
-      //   .promise();
-      // console.log(res3);
-      // del object - key 필요
-      //* key는
-      // const res4 = await new AWS.S3()
-      //   .deleteObject({
-      //     Bucket: 'mmuzawyho6ib',
-      //     Key: 'banner/home/1618028266591Layer-1704-1200x630.jpeg',
-      //   })
-      //   .promise();
-      // console.log(res4);
-    };
+    const test = async () => {};
 
     test();
   }
