@@ -16,4 +16,9 @@ export class UploadsController {
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
     return this.uploadService.uploadS3(file);
   }
+  @Post('banner')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadBanner(@UploadedFile() file: Express.Multer.File) {
+    return this.uploadService.uploadBanner(file, 'banner/home');
+  }
 }
