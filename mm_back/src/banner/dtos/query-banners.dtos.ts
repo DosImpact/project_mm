@@ -1,7 +1,7 @@
 import { CoreOutput } from '@/common/dtos/output.dto';
 import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
 import { IsNumber, IsString } from 'class-validator';
-import { BannerItem } from '../entities/banner.entity';
+import { Banner, BannerItem } from '../entities/banner.entity';
 
 @InputType()
 export class BannerByNameInput {
@@ -12,16 +12,8 @@ export class BannerByNameInput {
 
 @ObjectType()
 export class BannerByNameOutput extends CoreOutput {
-  @IsString()
-  @Field(() => String)
-  bannerName: string;
-
-  @IsNumber()
-  @Field(() => Int)
-  bannerSize: number;
-
-  @Field(() => [BannerItem], { nullable: true })
-  images?: BannerItem[];
+  @Field(() => Banner, { nullable: true })
+  banner?: Banner;
 }
 
 @InputType()

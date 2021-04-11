@@ -31,11 +31,21 @@ type Banner {
   bannerSize: Int!
   bucketName: String!
   createdAt: DateTime!
-  deletedAt: DateTime!
+  deletedAt: DateTime
   id: Float!
   images: [BannerItem!]
   updatedAt: DateTime!
   v: Float!
+}
+
+input BannerByNameInput {
+  bannerName: String!
+}
+
+type BannerByNameOutput {
+  banner: Banner
+  error: String
+  ok: Boolean!
 }
 
 type BannerItem {
@@ -99,6 +109,15 @@ type CreateUserOutput {
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+input DeleteBannerInput {
+  bannerName: String!
+}
+
+type DeleteBannerOutput {
+  error: String
+  ok: Boolean!
+}
 
 input DeleteProblem01Input {
   id: Float!
@@ -170,6 +189,7 @@ type Mutation {
   createProblem01(createProblem01Input: CreateProblem01Input!): CreateProblem01Output!
   createProblem02(input: CreateProblem02Input!): CreateProblem02Output!
   createUser(input: CreateUserInput!): CreateUserOutput!
+  deleteBanner(input: DeleteBannerInput!): DeleteBannerOutput!
   deleteUser(input: DeleteUserInput!): DeleteUserOutput!
   updateUser(input: UpdateUserInput!): UpdateUserOutput!
 }
@@ -183,7 +203,7 @@ enum P02UserRole {
 type Problem01 {
   answer: Answer!
   createdAt: DateTime!
-  deletedAt: DateTime!
+  deletedAt: DateTime
   id: Float!
   subTitle: String
   title: String!
@@ -204,7 +224,7 @@ type Problem01Output {
 
 type Problem02 {
   createdAt: DateTime!
-  deletedAt: DateTime!
+  deletedAt: DateTime
   email: String!
   id: Float!
   password: String!
@@ -237,6 +257,7 @@ type Problems02Output {
 
 type Query {
   AdderProblem03(input: AdderProblem03Input!): AdderProblem03Output!
+  bannerByName(input: BannerByNameInput!): BannerByNameOutput!
   getProblem01(problem01Input: Problem01Input!): Problem01Output!
   getProblem02(input: Problem02Input!): Problem02Output!
   getProblems01: Problems01Output!
@@ -299,7 +320,7 @@ type UpdateUserOutput {
 
 type User {
   createdAt: DateTime!
-  deletedAt: DateTime!
+  deletedAt: DateTime
   email: String!
   id: Float!
   password: String!

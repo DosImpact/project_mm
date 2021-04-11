@@ -9,7 +9,9 @@ import {
 } from './dtos/mutation-banners.dtos';
 import {
   BannerByNameInput,
+  BannerByNameOutput,
   DeleteBannerInput,
+  DeleteBannerOutput,
 } from './dtos/query-banners.dtos';
 import { Banner, BannerItem } from './entities/banner.entity';
 
@@ -73,6 +75,75 @@ export class BannersService {
       };
     }
   }
-  async bannerByName(bannerByNameInput: BannerByNameInput) {}
-  async deleteBanners(deleteBannerInput: DeleteBannerInput) {}
+  async bannerByName({
+    bannerName,
+  }: BannerByNameInput): Promise<BannerByNameOutput> {
+    try {
+      const banner = await this.bannersRepo.findOneOrFail({
+        where: { bannerName },
+      });
+      return {
+        ok: true,
+        banner,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        error: `cannot find banner by ${bannerName}`,
+      };
+    }
+  }
+  async deleteBanners({
+    bannerName,
+  }: DeleteBannerInput): Promise<DeleteBannerOutput> {
+    try {
+      // check banner by name
+      const res = await this.bannerByName({ bannerName });
+      if (!res.ok || !res.banner) {
+        return res;
+      }
+      // (delete S3)
+      // delete DB
+      const removeres = await this.bannersRepo.softRemove(res.banner);
+      console.log(removeres);
+
+      return { ok: true };
+    } catch (error) {
+      this.logger.error(`Cannot soft delete banner [DB] ${bannerName}`);
+      return {
+        ok: false,
+        error: `Cannot soft delete banner [DB] ${bannerName}`,
+      };
+    }
+  }
+
+  async hardDeleteBanners({
+    bannerName,
+  }: DeleteBannerInput): Promise<DeleteBannerOutput> {
+    try {
+      // check banner by name
+      const res = await this.bannerByName({ bannerName });
+      if (!res.ok || !res.banner) {
+        return res;
+      }
+      // delete S3
+      const banner = res.banner;
+      await Promise.all(
+        banner.images.map(async (img) => {
+          const res = await this.uploadService.deleteS3(img.key);
+          if (!res.ok) throw Error('cannot delete S3');
+        }),
+      );
+      // delete DB
+      await this.bannersRepo.delete({ bannerName });
+
+      return { ok: true };
+    } catch (error) {
+      this.logger.error(`Cannot delete banner [S3|DB] ${bannerName}`);
+      return {
+        ok: false,
+        error: `Cannot delete banner [S3|DB] ${bannerName}`,
+      };
+    }
+  }
 }

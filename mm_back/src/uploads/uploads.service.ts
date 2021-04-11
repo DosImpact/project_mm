@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as AWS from 'aws-sdk';
 import { date } from 'joi';
@@ -15,6 +15,7 @@ export class UploadService {
   private readonly REGION: string;
   private readonly BUCKET_NAME: string;
   private readonly ACL: string = 'public-read';
+  private readonly logger = new Logger(UploadService.name);
 
   constructor(private readonly configService: ConfigService) {
     AWS.config.update({
@@ -50,6 +51,20 @@ ${folder && folder + '/'}${objectName}`;
       const url = this.makePublicUrl(folder, objectName);
       return { ok: true, ETag, url };
     } catch (error) {
+      return { ok: false };
+    }
+  }
+  async deleteS3(Key: string) {
+    // key값에 / 있으면 안되더라
+    Key = Key.startsWith('/') ? Key.replace('/', '') : Key;
+    try {
+      await this.S3.deleteObject({
+        Bucket: this.BUCKET_NAME,
+        Key,
+      }).promise();
+      return { ok: true };
+    } catch (error) {
+      this.logger.error(`cannot deleteS3 ${Key}`);
       return { ok: false };
     }
   }
