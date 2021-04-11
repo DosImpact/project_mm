@@ -19,7 +19,7 @@ import { PyTask } from '@/pyshell/entities/py-task.dto';
 @Entity()
 export class User extends CoreEntity {
   @IsString()
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @Column({ default: '', nullable: true })
   username: string;
 

@@ -23,9 +23,10 @@ export class CoreEntity {
   @UpdateDateColumn()
   updatedAt: Date; // auto log 업데이트 일자
 
-  @Field(() => Date)
+  // 주의 ! : 삭제된 날짜는 처음에는 null 값이다.
+  @Field(() => Date, { nullable: true })
   @DeleteDateColumn()
-  deletedAt: Date; // auto log soft삭제
+  deletedAt?: Date; // auto log soft삭제
 
   @Field(() => Number)
   @VersionColumn()

@@ -1,6 +1,7 @@
 import {
   Field,
   InputType,
+  Int,
   ObjectType,
   registerEnumType,
 } from '@nestjs/graphql';
@@ -30,7 +31,11 @@ export class Profile extends CoreEntity {
 
   // relation
 
-  @OneToOne(() => Profile, (profile) => profile.user, { onDelete: 'CASCADE' })
-  @JoinColumn()
+  @Field(() => Int, { nullable: true })
+  @Column({ nullable: true })
+  userId: number;
+
+  @OneToOne(() => User, (user) => user.profile, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'userId' })
   user: User;
 }

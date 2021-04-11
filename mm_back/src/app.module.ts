@@ -29,6 +29,7 @@ import { Verification } from './users/entities/verification.entity';
 import { UsersModule } from './users/users.module';
 import { UploadsModule } from './uploads/uploads.module';
 import { BannersModule } from './banner/banners.module';
+import { Banner } from './banner/entities/banner.entity';
 
 @Module({
   imports: [
@@ -79,6 +80,7 @@ import { BannersModule } from './banner/banners.module';
         Note,
         SharedNote,
         NUser,
+        Banner,
       ],
     }),
     GraphQLModule.forRoot({

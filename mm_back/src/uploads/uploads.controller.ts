@@ -11,14 +11,14 @@ import { UploadService } from './uploads.service';
 export class UploadsController {
   constructor(private readonly uploadService: UploadService) {}
 
-  @Post('')
-  @UseInterceptors(FileInterceptor('file'))
-  async uploadFile(@UploadedFile() file: Express.Multer.File) {
-    return this.uploadService.uploadS3(file);
-  }
-  @Post('banner')
-  @UseInterceptors(FileInterceptor('file'))
-  async uploadBanner(@UploadedFile() file: Express.Multer.File) {
-    return this.uploadService.uploadBanner(file, 'banner/home');
-  }
+  // @Post('')
+  // @UseInterceptors(FileInterceptor('file'))
+  // async uploadFile(@UploadedFile() file: Express.Multer.File) {
+  //   return this.uploadService.uploadS3(file);
+  // }
+  // @Post('banner')
+  // @UseInterceptors(FileInterceptor('file'))
+  // async uploadBanner(@UploadedFile() file: Express.Multer.File) {
+  //   return this.uploadService.uploadBanner(file, 'banner/home');
+  // }
 }
