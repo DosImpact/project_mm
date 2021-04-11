@@ -56,6 +56,9 @@ import { BannersModule } from './banner/banners.module';
         ...(process.env.REDIS_PASSWORD && {
           password: process.env.REDIS_PASSWORD,
         }),
+        tls: {
+          rejectUnauthorized: false,
+        },
       },
     }),
     TypeOrmModule.forRoot({

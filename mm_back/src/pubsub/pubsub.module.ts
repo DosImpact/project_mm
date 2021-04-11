@@ -11,6 +11,8 @@ export class PubsubModule {
     redis_port,
     redis_password,
   }: PubsubModuleOptions): DynamicModule {
+    console.log(redis_host, redis_port, redis_password);
+
     return {
       module: PubsubModule,
       imports: [],
@@ -22,6 +24,9 @@ export class PubsubModule {
               host: redis_host,
               port: redis_port,
               ...(redis_password && { password: redis_password }),
+              // tls: {
+              // rejectUnauthorized: false,
+              // },
             },
           }), //useValue: new PubSub()
         },
