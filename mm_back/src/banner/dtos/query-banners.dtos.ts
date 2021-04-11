@@ -1,7 +1,7 @@
 import { CoreOutput } from '@/common/dtos/output.dto';
-import { Field, InputType, Int, ObjectType } from '@nestjs/graphql';
-import { IsNumber, IsString } from 'class-validator';
-import { Banner, BannerItem } from '../entities/banner.entity';
+import { Field, InputType, ObjectType } from '@nestjs/graphql';
+import { IsString } from 'class-validator';
+import { Banner } from '../entities/banner.entity';
 
 @InputType()
 export class BannerByNameInput {

@@ -17,7 +17,7 @@ import { Banner, BannerItem } from './entities/banner.entity';
 
 @Injectable()
 export class BannersService {
-  private readonly path: string = 'banner';
+  private readonly S3_FOLDER: string = 'banner';
   private readonly logger = new Logger(BannersService.name);
 
   constructor(
@@ -31,7 +31,7 @@ export class BannersService {
     files: Express.Multer.File,
     { bannerName }: CreateBannerInput,
   ): Promise<CreateBannerOutput> {
-    const path = `${this.path}/${bannerName}`;
+    const path = `${this.S3_FOLDER}/${bannerName}`;
     try {
       // check exist banner
       let banner = await this.bannersRepo.findOne({ where: { bannerName } });

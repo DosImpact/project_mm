@@ -1,14 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as AWS from 'aws-sdk';
-import { date } from 'joi';
-/**
-listBuckets
-createBucket
-listObjects
-upload
-deleteBucket
-*/
+
+// S3 Atomic funtions
+
 @Injectable()
 export class UploadService {
   private readonly S3: AWS.S3;
@@ -68,6 +63,9 @@ ${folder && folder + '/'}${objectName}`;
       return { ok: false };
     }
   }
+
+  // recommand - use AWS Console
+  // async createBucket(){}
 
   // deprecated
   // makeUrl(folder: string, objectName: string) {
