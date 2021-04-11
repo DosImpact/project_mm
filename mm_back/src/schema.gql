@@ -54,6 +54,12 @@ type BannerItem {
   src: String!
 }
 
+enum Bio {
+  Man
+  NoComment
+  Woman
+}
+
 input CheckProblem01Input {
   answer: [String!]!
   id: Int!
@@ -178,6 +184,17 @@ type LoginProblem02Output {
   token: String
 }
 
+input LoginUserInput {
+  email: String!
+  password: String!
+}
+
+type LoginUserOuput {
+  error: String
+  ok: Boolean!
+  token: String
+}
+
 type Mutation {
   CheckProblem02: CheckProblem02Output!
   DeleteProblem01(deleteProblem01Input: DeleteProblem01Input!): DeleteProblem01Output!
@@ -191,6 +208,7 @@ type Mutation {
   createUser(input: CreateUserInput!): CreateUserOutput!
   deleteBanner(input: DeleteBannerInput!): DeleteBannerOutput!
   deleteUser(input: DeleteUserInput!): DeleteUserOutput!
+  loginUser(input: LoginUserInput!): LoginUserOuput!
   updateUser(input: UpdateUserInput!): UpdateUserOutput!
 }
 
@@ -255,6 +273,34 @@ type Problems02Output {
   problems02: [Problem02!]!
 }
 
+type Profile {
+  bio: Bio!
+  createdAt: DateTime!
+  deletedAt: DateTime
+  id: Float!
+  updatedAt: DateTime!
+  userId: Int
+  v: Float!
+}
+
+type PyTask {
+  createdAt: DateTime!
+  deletedAt: DateTime
+  id: Float!
+  outputs: String
+  taskStatus: PyTaskStatus!
+  updatedAt: DateTime!
+  userId: Int!
+  v: Float!
+}
+
+enum PyTaskStatus {
+  Error
+  Finish
+  Progress
+  Wait
+}
+
 type Query {
   AdderProblem03(input: AdderProblem03Input!): AdderProblem03Output!
   bannerByName(input: BannerByNameInput!): BannerByNameOutput!
@@ -264,6 +310,7 @@ type Query {
   getProblems02: Problems02Output!
   getUserByEmail(input: GetUserByEmailInput!): GetUserByEmailOutput!
   getUserById(input: GetUserByIdInput!): GetUserByIdOutput!
+  me: User!
   searchUser(input: SearchUserInput!): SearchUserOutput!
 }
 
@@ -307,7 +354,6 @@ type UpdateProblem02Output {
 
 input UpdateUserInput {
   email: String
-  id: String!
   password: String
   username: String
 }
@@ -324,8 +370,20 @@ type User {
   email: String!
   id: Float!
   password: String!
+  profile: Profile!
+  pyTasks: [PyTask!]
+  role: UserRole!
   updatedAt: DateTime!
   username: String
   v: Float!
   verified: Boolean!
+}
+
+enum UserRole {
+  Admin
+  Diamond
+  Gold
+  Platinum
+  Ruby
+  Sliver
 }

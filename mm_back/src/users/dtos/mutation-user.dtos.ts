@@ -38,10 +38,7 @@ export class DeleteUserOutput extends CoreOutput {
 }
 
 @InputType()
-export class UpdateUserInput extends PartialType(CreateUserInput) {
-  @Field(() => String)
-  id: string;
-}
+export class UpdateUserInput extends PartialType(CreateUserInput) {}
 
 @ObjectType()
 export class UpdateUserOutput extends CoreOutput {

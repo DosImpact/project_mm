@@ -8,9 +8,21 @@ import { JwtService } from './jwt.service';
 export class JwtMiddleWare implements NestMiddleware {
   constructor(
     private readonly jwtService: JwtService,
-    private readonly UsersService: UsersService,
+    private readonly usersService: UsersService,
   ) {}
   async use(req: Request, res: Response, next: NextFunction) {
+    if ('mm-jwt' in req.headers) {
+      const token = req.headers['mm-jwt'];
+      try {
+        const decoded = this.jwtService.verify(token.toString());
+        if (typeof decoded === 'object' && 'id' in decoded) {
+          const { ok, user } = await this.usersService.getUserById({
+            id: decoded['id'],
+          });
+          if (ok && user) req['user'] = user;
+        }
+      } catch (error) {}
+    }
     next();
   }
 }
@@ -22,7 +34,7 @@ export class Problem02MiddleWare implements NestMiddleware {
     private readonly problemsService: ProblemsService,
   ) {}
   async use(req: Request, res: Response, next: NextFunction) {
-    console.log('Problem02MiddleWare check in');
+    // console.log('Problem02MiddleWare check in');
     if ('my-jwt' in req.headers) {
       const token = req.headers['my-jwt'];
       try {

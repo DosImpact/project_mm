@@ -1,5 +1,10 @@
-import { Field, InputType, ObjectType } from '@nestjs/graphql';
-import { IsBoolean, IsString } from 'class-validator';
+import {
+  Field,
+  InputType,
+  ObjectType,
+  registerEnumType,
+} from '@nestjs/graphql';
+import { IsBoolean, IsEnum, IsString } from 'class-validator';
 import { CoreEntity } from 'src/common/entities/core.entity';
 import {
   BeforeInsert,
@@ -13,6 +18,17 @@ import { Profile } from './profile.entity';
 import { compare, hash, genSalt } from 'bcrypt';
 import { InternalServerErrorException } from '@nestjs/common';
 import { PyTask } from '@/pyshell/entities/py-task.dto';
+
+export enum UserRole {
+  Admin = 'Admin',
+  Sliver = 'Sliver',
+  Gold = 'Gold',
+  Platinum = 'Platinum',
+  Diamond = 'Diamon',
+  Ruby = 'Ruby',
+}
+
+registerEnumType(UserRole, { name: 'UserRole' });
 
 @InputType({ isAbstract: true })
 @ObjectType()
@@ -33,6 +49,11 @@ export class User extends CoreEntity {
   @Column()
   password: string;
 
+  @IsEnum(UserRole)
+  @Field(() => UserRole)
+  @Column({ type: 'enum', enum: UserRole, default: UserRole.Sliver })
+  role: UserRole;
+
   @IsBoolean()
   @Field(() => Boolean)
   @Column({ default: false })
@@ -40,10 +61,12 @@ export class User extends CoreEntity {
 
   //relation part
   // 한명의 유저는 하나의 프로필을 갖는다.
+  @Field(() => Profile)
   @OneToOne(() => Profile, (profile) => profile.user)
   profile: Profile;
 
   // 한명의 유저는 요청한 여러 작업결과를 갖는다.
+  @Field(() => [PyTask], { nullable: true })
   @OneToMany(() => PyTask, (pyTask) => pyTask.user)
   pyTasks: PyTask[];
 

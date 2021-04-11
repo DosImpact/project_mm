@@ -30,6 +30,7 @@ import { UsersModule } from './users/users.module';
 import { UploadsModule } from './uploads/uploads.module';
 import { BannersModule } from './banner/banners.module';
 import { Banner } from './banner/entities/banner.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -90,10 +91,10 @@ import { Banner } from './banner/entities/banner.entity';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'), // 생성된 schema 파일 확인 요망
       sortSchema: true, // 정렬
       context: ({ req }) => {
-        console.log('GraphQLModule context checkin');
+        // console.log('GraphQLModule context checkin', req['user']);
         // req에서 꺼내서 표면에 올린다.
-        // context { req:{ problem02:{...}, ...} } => context { req:{...}, problem02:{...} }
-        return { problem02: req['problem02'] };
+        // context { req:{ user:{...}, ...} } => context { req:{...}, user:{...} }
+        return { user: req['user'] };
       },
     }),
     CommonModule,
@@ -109,6 +110,7 @@ import { Banner } from './banner/entities/banner.entity';
       pythonOptions: ['-u'], // get print results in real-time
       scriptPath: 'py',
     }),
+    AuthModule,
     UsersModule,
     ProblemsModule,
     NoteModule,

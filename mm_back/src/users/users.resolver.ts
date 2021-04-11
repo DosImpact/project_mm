@@ -1,10 +1,15 @@
+import { AuthGuard } from '@/auth/auth.guard';
+import { Role } from '@/auth/role.decorator';
+import { SetMetadata, UseGuards } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   CreateUserInput,
   CreateUserOutput,
   DeleteUserInput,
   DeleteUserOutput,
+  LoginUserInput,
+  LoginUserOuput,
   UpdateUserInput,
   UpdateUserOutput,
 } from './dtos/mutation-user.dtos';
@@ -41,10 +46,23 @@ export class UsersResolver {
     return this.usersService.getUserByEmail(getUserByEmailInput);
   }
 
+  // @UseGuards(AuthGuard)
+  // @SetMetadata('lala', 'dosimpact')
+  @Role(['Admin', 'Diamond'])
+  @Query((returns) => User)
+  async me(@Context() context) {
+    // console.log(context);
+    return context['user'];
+  }
+
   // user - Mutation
   @Mutation((returns) => CreateUserOutput)
   async createUser(@Args('input') createUserInput: CreateUserInput) {
     return this.usersService.createUser(createUserInput);
+  }
+  @Mutation((returns) => LoginUserOuput)
+  async loginUser(@Args('input') loginUserInput: LoginUserInput) {
+    return this.usersService.loginUser(loginUserInput);
   }
 
   @Mutation((returns) => UpdateUserOutput)
