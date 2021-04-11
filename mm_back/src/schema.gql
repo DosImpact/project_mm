@@ -26,6 +26,12 @@ input AnswerInputType {
   isNumber: Boolean!
 }
 
+type BannerItem {
+  base_url: String!
+  key: String!
+  src: String!
+}
+
 input CheckProblem01Input {
   answer: [String!]!
   id: Int!

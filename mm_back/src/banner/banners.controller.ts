@@ -1,17 +1,24 @@
 import {
+  Body,
   Controller,
   Post,
-  UploadedFile,
+  UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { BannersService } from './banners.service';
+import { CreateBannerInput } from './dtos/mutation-banners.dtos';
 
 @Controller('banners')
 export class BannersController {
+  constructor(private readonly bannersService: BannersService) {}
   //create banner
   @Post('create')
-  @UseInterceptors(FileInterceptor('file'))
-  async createBanner(@UploadedFile() file: Express.Multer.File) {
-    console.log(file);
+  @UseInterceptors(FilesInterceptor('files'))
+  async createBanner(
+    @UploadedFiles() files: Express.Multer.File,
+    @Body() body: CreateBannerInput,
+  ) {
+    return this.bannersService.createBanners(files, body);
   }
 }

@@ -17,9 +17,9 @@ export class BannerItem {
 }
 
 @Entity()
-@InputType('HomeBannerInput', { isAbstract: true })
+@InputType('BannerInput', { isAbstract: true })
 @ObjectType()
-export class HomeBanner extends CoreEntity {
+export class Banner extends CoreEntity {
   @IsString()
   @Field(() => String)
   @Column()

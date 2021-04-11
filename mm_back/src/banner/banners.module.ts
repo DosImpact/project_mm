@@ -1,5 +1,7 @@
+import { UploadService } from '@/uploads/uploads.service';
 import { Module } from '@nestjs/common';
 import { BannersController } from './banners.controller';
+import { BannersService } from './banners.service';
 
 /**
  베너 모듈 
@@ -15,6 +17,8 @@ import { BannersController } from './banners.controller';
  
  */
 @Module({
+  imports: [],
   controllers: [BannersController],
+  providers: [BannersService, UploadService],
 })
 export class BannersModule {}
