@@ -1,3 +1,4 @@
+import { AuthUser } from '@/auth/auth-user.decorator';
 import { AuthGuard } from '@/auth/auth.guard';
 import { Role } from '@/auth/role.decorator';
 import { SetMetadata, UseGuards } from '@nestjs/common';
@@ -48,11 +49,10 @@ export class UsersResolver {
 
   // @UseGuards(AuthGuard)
   // @SetMetadata('lala', 'dosimpact')
-  @Role(['Admin', 'Diamond'])
+  @Role(['Any'])
   @Query((returns) => User)
-  async me(@Context() context) {
-    // console.log(context);
-    return context['user'];
+  async me(@AuthUser() user: User) {
+    return user;
   }
 
   // user - Mutation

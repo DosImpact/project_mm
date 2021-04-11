@@ -15,7 +15,6 @@ export class AuthGuard implements CanActivate {
       'roles',
       context.getHandler(),
     );
-    console.log('roles', roles);
 
     // public - no need jwt
     if (!roles) return true;
@@ -24,7 +23,6 @@ export class AuthGuard implements CanActivate {
     const rolestr = roles.toString();
     const gqlContenxt = GqlExecutionContext.create(context).getContext();
     const user: User = gqlContenxt['user'];
-    console.log('roles', roles, rolestr, user.role);
     if (!user) return false; // JWT 가 없는 경우
 
     if (roles.includes('Any')) return true; // JWT 있고 & Any
