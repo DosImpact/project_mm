@@ -12,7 +12,10 @@ import { CreateBannerInput } from './dtos/mutation-banners.dtos';
 @Controller('banners')
 export class BannersController {
   constructor(private readonly bannersService: BannersService) {}
-  //create banner
+
+  // header :{Content-Type:multipart/form-data}
+  // interceptors 는 files라는 키값을 가진 데이터를 body에서 가로챈다.
+  // @Body 에는 나머지 데이터만 남게 된다.
   @Post('create')
   @UseInterceptors(FilesInterceptor('files'))
   async createBanner(

@@ -26,6 +26,18 @@ input AnswerInputType {
   isNumber: Boolean!
 }
 
+type Banner {
+  bannerName: String!
+  bannerSize: Int!
+  bucketName: String!
+  createdAt: DateTime!
+  deletedAt: DateTime!
+  id: Float!
+  images: [BannerItem!]
+  updatedAt: DateTime!
+  v: Float!
+}
+
 type BannerItem {
   base_url: String!
   key: String!

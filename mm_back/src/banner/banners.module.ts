@@ -1,7 +1,9 @@
 import { UploadService } from '@/uploads/uploads.service';
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { BannersController } from './banners.controller';
 import { BannersService } from './banners.service';
+import { Banner } from './entities/banner.entity';
 
 /**
  베너 모듈 
@@ -17,7 +19,7 @@ import { BannersService } from './banners.service';
  
  */
 @Module({
-  imports: [],
+  imports: [TypeOrmModule.forFeature([Banner])],
   controllers: [BannersController],
   providers: [BannersService, UploadService],
 })

@@ -14,7 +14,7 @@ export class UploadService {
   private readonly S3: AWS.S3;
   private readonly REGION: string;
   private readonly BUCKET_NAME: string;
-  private readonly ACL: string;
+  private readonly ACL: string = 'public-read';
 
   constructor(private readonly configService: ConfigService) {
     AWS.config.update({
@@ -27,7 +27,6 @@ export class UploadService {
     this.BUCKET_NAME = configService.get('AWS_S3_BUCKET_NAME');
     this.REGION = configService.get('AWS_CONFIG_REGION');
     this.S3 = new AWS.S3();
-    this.ACL = 'public-read';
   }
   // return public url
   makePublicUrl(folder: string, objectName: string) {

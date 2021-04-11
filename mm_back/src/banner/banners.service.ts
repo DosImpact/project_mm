@@ -1,38 +1,77 @@
 import { UploadService } from '@/uploads/uploads.service';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { CreateBannerInput } from './dtos/mutation-banners.dtos';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import {
+  CreateBannerInput,
+  CreateBannerOutput,
+} from './dtos/mutation-banners.dtos';
 import {
   BannerByNameInput,
   DeleteBannerInput,
 } from './dtos/query-banners.dtos';
-
-// ? 배너라는 버킷 / 홈배너 버킷을 만들고 / 이 아래 파일들을 저장하고 싶다.
-// ? 배너/홈배너 버킷의 내용들을 싹다 읽고싶다. , 혹은 하나만
-// ? 배너/홈내버 버킷 내용중 특정 key값에 대한 value(파일) 을 update , delete하고 싶다.
+import { Banner, BannerItem } from './entities/banner.entity';
 
 @Injectable()
 export class BannersService {
-  private readonly path: string;
+  private readonly path: string = 'banner';
+  private readonly logger = new Logger(BannersService.name);
+
   constructor(
     private readonly configService: ConfigService,
     private readonly uploadService: UploadService,
-  ) {
-    this.path = 'banner';
-  }
+    @InjectRepository(Banner)
+    private readonly bannersRepo: Repository<Banner>,
+  ) {}
 
   async createBanners(
     files: Express.Multer.File,
     { bannerName }: CreateBannerInput,
-  ) {
+  ): Promise<CreateBannerOutput> {
     const path = `${this.path}/${bannerName}`;
     try {
-      console.log(files[2], bannerName);
-      const res = await this.uploadService.uploadS3(files[2], path);
-      console.log(res);
-      return res;
-    } catch (error) {}
-    return 'ok';
+      // check exist banner
+      let banner = await this.bannersRepo.findOne({ where: { bannerName } });
+      if (banner) {
+        return {
+          ok: false,
+          error: 'banner name exist',
+        };
+      }
+      banner = this.bannersRepo.create();
+      banner.bucketName = this.configService.get('AWS_S3_BUCKET_NAME');
+      banner.bannerName = bannerName;
+      const tmpImages: BannerItem[] = [];
+
+      // upload part
+      for (const key in files) {
+        const file: Express.Multer.File = files[key];
+        const res = await this.uploadService.uploadS3(file, path);
+        if (!res.ok) {
+          return { ok: false, error: 'cannot upload S3' };
+        }
+        const url = new URL(res.url);
+        tmpImages.push({
+          base_url: url.origin,
+          src: res.url,
+          key: url.pathname,
+        });
+      }
+      banner.bannerSize = tmpImages.length;
+      banner.images = tmpImages;
+      await this.bannersRepo.save(banner);
+      // save banner
+      return {
+        ok: true,
+        banner: banner,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        error: 'cannot create banner',
+      };
+    }
   }
   async bannerByName(bannerByNameInput: BannerByNameInput) {}
   async deleteBanners(deleteBannerInput: DeleteBannerInput) {}
