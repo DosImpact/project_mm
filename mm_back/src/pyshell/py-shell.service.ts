@@ -72,6 +72,7 @@ export class PyShellService {
     // 기존 코드 ,파이썬 실행 - 메시지 보내기, 이벤트 드리븐 : 메시지 받기 이벤트, 종료 이벤트
     // API wrapping 하려면
     // Promise객체를 생성 - 그 안에서 종료 이벤트를 받으면 리턴
+    if (!filename.endsWith('py')) filename = filename + '.py';
     try {
       const { result, sucess, error } = await new Promise<{
         sucess: boolean;
@@ -83,9 +84,12 @@ export class PyShellService {
           args,
         });
         const outputs = Array<string>();
-        for (const ins of inputs) {
-          pyShell.send(ins);
+        if (inputs) {
+          for (const ins of inputs) {
+            pyShell.send(ins);
+          }
         }
+
         pyShell.on('message', (message) => {
           if (message) outputs.push(String(message).trim());
         });

@@ -1,4 +1,4 @@
-import { OHLCVL } from '@/finance/dtos/OHLCVL.dto';
+import { OHLCV } from '@/finance/entities/OHLCV.entity';
 import { BullModule } from '@nestjs/bull';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
@@ -40,7 +40,7 @@ import { ProcessorModule } from './processor.module';
       url: process.env.DATABASE_URL,
       synchronize: false,
       logging: false,
-      entities: [OHLCVL],
+      entities: [OHLCV],
     }),
     ProcessorModule,
   ],
