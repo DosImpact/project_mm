@@ -1,6 +1,8 @@
+import { OHLCVL } from '@/finance/dtos/OHLCVL.dto';
 import { BullModule } from '@nestjs/bull';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
 import { ProcessorModule } from './processor.module';
 
@@ -29,6 +31,16 @@ import { ProcessorModule } from './processor.module';
           password: process.env.REDIS_PASSWORD,
         }),
       },
+    }),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      ssl: {
+        rejectUnauthorized: false,
+      },
+      url: process.env.DATABASE_URL,
+      synchronize: false,
+      logging: false,
+      entities: [OHLCVL],
     }),
     ProcessorModule,
   ],

@@ -31,6 +31,7 @@ import { UploadsModule } from './uploads/uploads.module';
 import { BannersModule } from './banner/banners.module';
 import { Banner } from './banner/entities/banner.entity';
 import { AuthModule } from './auth/auth.module';
+import { OHLCVL } from './finance/dtos/OHLCVL.dto';
 
 @Module({
   imports: [
@@ -82,6 +83,7 @@ import { AuthModule } from './auth/auth.module';
         SharedNote,
         NUser,
         Banner,
+        OHLCVL,
       ],
     }),
     GraphQLModule.forRoot({
