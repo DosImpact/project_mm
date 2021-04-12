@@ -15,12 +15,16 @@ import {
   UpdateUserOutput,
 } from './dtos/mutation-user.dtos';
 import {
+  UpdateProfileInput,
+  UpdateProfileOutput,
+} from './dtos/mutations-profile.dtos';
+import {
   GetUserByEmailInput,
   GetUserByEmailOutput,
   GetUserByIdInput,
   GetUserByIdOutput,
-  SearchUserInput,
-  SearchUserOutput,
+  SearchUserByEmailInput,
+  SearchUserByEmailOutput,
 } from './dtos/query-user.dtos';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
@@ -30,9 +34,11 @@ export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
   // user - query
-  @Query((returns) => SearchUserOutput)
-  async searchUser(@Args('input') searchUserInput: SearchUserInput) {
-    return this.usersService.searchUsers(searchUserInput);
+  @Query((returns) => SearchUserByEmailOutput)
+  async searchUsersByEmail(
+    @Args('input') searchUserInput: SearchUserByEmailInput,
+  ) {
+    return this.usersService.searchUsersByEmail(searchUserInput);
   }
 
   @Query((returns) => GetUserByIdOutput)
@@ -65,13 +71,21 @@ export class UsersResolver {
     return this.usersService.loginUser(loginUserInput);
   }
 
+  // update user field
   @Mutation((returns) => UpdateUserOutput)
   async updateUser(@Args('input') updateUserInput: UpdateUserInput) {
     return this.usersService.updateUser(updateUserInput);
   }
+  // update user profile field
+  @Mutation((returns) => UpdateProfileOutput)
+  async updateProfile(@Args('input') updateProfileInput: UpdateProfileInput) {
+    return this.usersService.UpdateProfile(updateProfileInput);
+  }
 
+  // soft delete user
   @Mutation((returns) => DeleteUserOutput)
   async deleteUser(@Args('input') deleteUserInput: DeleteUserInput) {
     return this.usersService.deleteUser(deleteUserInput);
   }
+  // TODO hard delete user
 }

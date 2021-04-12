@@ -12,7 +12,7 @@ import { Profile } from '../entities/profile.entity';
 // 프로필 업데이트 , 어떤 유저인지 ( id,User객체? )
 @InputType()
 export class UpdateProfileInput extends PartialType(
-  PickType(Profile, ['bio']),
+  PickType(Profile, ['bio'] as const), // TODO const assertion 을 사용 ?? - 이유 파악
 ) {
   @IsString()
   @Field(() => String)

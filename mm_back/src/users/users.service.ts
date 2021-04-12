@@ -1,7 +1,7 @@
 import { JwtService } from '@/jwt/jwt.service';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Raw, Repository } from 'typeorm';
 import {
   CreateUserInput,
   CreateUserOutput,
@@ -21,13 +21,14 @@ import {
   GetUserByEmailOutput,
   GetUserByIdInput,
   GetUserByIdOutput,
-  SearchUserInput,
+  SearchUserByEmailInput,
+  SearchUserByEmailOutput,
 } from './dtos/query-user.dtos';
 import { Bio, Profile } from './entities/profile.entity';
 import { User } from './entities/user.entity';
 import { Verification } from './entities/verification.entity';
 
-// const logger = new Logger('UsersService');
+const logger = new Logger('UsersService');
 
 @Injectable()
 export class UsersService {
@@ -72,9 +73,55 @@ export class UsersService {
       };
     }
   }
-  async searchUsers({ term, page }: SearchUserInput) {
+  async getUsers() {
     try {
-    } catch (error) {}
+      const [users, usersCount] = await this.usersRepo.findAndCount({
+        relations: ['profile'],
+      });
+      return { ok: true, users, usersCount };
+    } catch (error) {
+      return { ok: false };
+    }
+  }
+  async searchUsersByEmail({
+    page,
+    searchTerm,
+  }: SearchUserByEmailInput): Promise<SearchUserByEmailOutput> {
+    // page(==1), searchTerm 은 null일수도 있다.
+    const pageElement = 5;
+    try {
+      // searchTerm이 없는 경우
+      if (!searchTerm) {
+        const { users, ok, usersCount } = await this.getUsers();
+        return {
+          ok,
+          users,
+          totalEntity: usersCount,
+          totalPage: Math.ceil(usersCount / pageElement),
+        };
+      }
+      // searchTerm - Email
+      const [users, usersCount] = await this.usersRepo.findAndCount({
+        where: {
+          email: Raw((email) => `${email} ILIKE '%${searchTerm}%'`),
+        },
+        relations: ['profile'],
+        skip: (page - 1) * pageElement,
+        take: pageElement,
+      });
+      return {
+        ok: true,
+        users,
+        totalEntity: usersCount,
+        totalPage: Math.ceil(usersCount / pageElement),
+      };
+    } catch (error) {
+      logger.error('cannot searchUsersByEmail', error);
+      return {
+        ok: false,
+        error: 'cannot searchUsersByEmail',
+      };
+    }
   }
 
   async loginUser({
@@ -157,6 +204,11 @@ export class UsersService {
       if (updatedUser.email) user.email = updatedUser.email;
       if (updatedUser.username) user.username = updatedUser.username;
       if (updatedUser.password) user.password = updatedUser.password;
+      await this.usersRepo.save(user);
+      return {
+        ok: true,
+        user,
+      };
     } catch (error) {
       return {
         ok: false,
@@ -179,8 +231,8 @@ export class UsersService {
   }
 
   async UpdateProfile({
-    bio,
     email,
+    bio,
   }: UpdateProfileInput): Promise<UpdateProfileOutput> {
     try {
       const user = await this.usersRepo.findOneOrFail({

@@ -7,8 +7,8 @@ import {
   PickType,
 } from '@nestjs/graphql';
 import { IsString, ValidateNested } from 'class-validator';
+import { Profile } from '../entities/profile.entity';
 import { User } from '../entities/user.entity';
-import { UpdateProfileInput } from './mutations-profile.dtos';
 
 // 클래스 유효성이 없는 필드는 삭제된다.
 

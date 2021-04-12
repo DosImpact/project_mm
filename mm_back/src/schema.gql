@@ -209,6 +209,7 @@ type Mutation {
   deleteBanner(input: DeleteBannerInput!): DeleteBannerOutput!
   deleteUser(input: DeleteUserInput!): DeleteUserOutput!
   loginUser(input: LoginUserInput!): LoginUserOuput!
+  updateProfile(input: UpdateProfileInput!): UpdateProfileOutput!
   updateUser(input: UpdateUserInput!): UpdateUserOutput!
 }
 
@@ -311,20 +312,20 @@ type Query {
   getUserByEmail(input: GetUserByEmailInput!): GetUserByEmailOutput!
   getUserById(input: GetUserByIdInput!): GetUserByIdOutput!
   me: User!
-  searchUser(input: SearchUserInput!): SearchUserOutput!
+  searchUsersByEmail(input: SearchUserByEmailInput!): SearchUserByEmailOutput!
 }
 
-input SearchUserInput {
+input SearchUserByEmailInput {
   page: Int = 1
-  term: String!
+  searchTerm: String
 }
 
-type SearchUserOutput {
+type SearchUserByEmailOutput {
   error: String
   ok: Boolean!
   totalEntity: Int!
   totalPage: Int!
-  users: [User!]!
+  users: [User!]
 }
 
 input UpdateProblem01Input {
@@ -350,6 +351,17 @@ input UpdateProblem02Input {
 type UpdateProblem02Output {
   error: String
   ok: Boolean!
+}
+
+input UpdateProfileInput {
+  bio: Bio
+  email: String!
+}
+
+type UpdateProfileOutput {
+  error: String
+  ok: Boolean!
+  profile: Profile
 }
 
 input UpdateUserInput {

@@ -1,5 +1,5 @@
 import { CoreOutput } from '@/common/dtos/output.dto';
-import { SearchInput, SearchOutput } from '@/common/dtos/search.dto';
+import { SearchPageInput, SearchPageOutput } from '@/common/dtos/search-page';
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { IsEmail, IsString } from 'class-validator';
 import { User } from '../entities/user.entity';
@@ -7,12 +7,12 @@ import { User } from '../entities/user.entity';
 // 다수의 유저 검색 ( 이메일, 아이디 )
 
 @InputType()
-export class SearchUserInput extends SearchInput {}
+export class SearchUserByEmailInput extends SearchPageInput {}
 
 @ObjectType()
-export class SearchUserOutput extends SearchOutput {
-  @Field((type) => [User])
-  users: User[];
+export class SearchUserByEmailOutput extends SearchPageOutput {
+  @Field((type) => [User], { nullable: true })
+  users?: User[];
 }
 
 // 아이디로 특정 유저 검색
