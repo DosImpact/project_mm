@@ -17,9 +17,9 @@ const applicationServer = async () => {
 };
 
 async function consumerServer() {
-  const consumer = await NestFactory.create(ConsumerModule);
-  consumer.enableCors({ credentials: true, origin: '*' });
-  await consumer.listen(null || 4001);
+  // const consumer = await NestFactory.create(ConsumerModule);
+  // consumer.enableCors({ credentials: true, origin: '*' });
+  // await consumer.listen(null || 4001);
 }
 async function DAServer() {}
 

@@ -17,6 +17,7 @@ import { ProcessorModule } from './processor.module';
         NODE_ENV: Joi.string().valid('dev', 'test', 'production'),
         MAINTAINER: Joi.string().required(),
         DATABASE_URL: Joi.string().required(),
+        DATABASE_IS_SSL: Joi.string().default('Y'),
         PORT: Joi.number().required(),
         JWT_KEY: Joi.string().required(),
         REDIS_HOST: Joi.string().required(),
@@ -34,9 +35,11 @@ import { ProcessorModule } from './processor.module';
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      ssl: {
-        rejectUnauthorized: false,
-      },
+      ...(process.env.DATABASE_IS_SSL === 'Y' && {
+        ssl: {
+          rejectUnauthorized: true,
+        },
+      }),
       url: process.env.DATABASE_URL,
       synchronize: false,
       logging: false,
