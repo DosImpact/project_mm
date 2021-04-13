@@ -43,12 +43,17 @@ import { FinanceModule } from './finance/finance.module';
       validationSchema: Joi.object({
         NODE_ENV: Joi.string().valid('dev', 'test', 'production'),
         MAINTAINER: Joi.string().required(),
+        // DB ENV
         DATABASE_URL: Joi.string().required(),
         DATABASE_IS_SSL: Joi.string().default('Y'),
+        // SERVER PORT ENV
         PORT: Joi.number().required(),
         JWT_KEY: Joi.string().required(),
+        // REDIST ENV
         REDIS_HOST: Joi.string().required(),
         REDIS_PORT: Joi.number().required(),
+        REDIS_IS_TLS: Joi.string().default('Y'),
+        // AWS ENV
         AWS_S3_BUCKET_NAME: Joi.string(),
         AWS_S3_ACCESS_KEY: Joi.string(),
         AWS_S3_SECRET_ACCESS_KEY: Joi.string(),
@@ -61,9 +66,11 @@ import { FinanceModule } from './finance/finance.module';
         ...(process.env.REDIS_PASSWORD && {
           password: process.env.REDIS_PASSWORD,
         }),
-        tls: {
-          rejectUnauthorized: false,
-        },
+        ...(process.env.REDIS_IS_TLS === 'Y' && {
+          tls: {
+            rejectUnauthorized: false,
+          },
+        }),
       },
     }),
     TypeOrmModule.forRoot({

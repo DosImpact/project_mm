@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import {
   ExePyInput,
   ExePyOutput,
@@ -9,6 +9,7 @@ import { PythonShell } from 'python-shell';
 
 @Injectable()
 export class PyShellService {
+  private readonly logger = new Logger(PyShellService.name);
   constructor(
     @Inject(CONFIG_OPTIONS)
     private readonly config: PyShellModuleOptions,
@@ -73,55 +74,65 @@ export class PyShellService {
     // API wrapping 하려면
     // Promise객체를 생성 - 그 안에서 종료 이벤트를 받으면 리턴
     if (!filename.endsWith('py')) filename = filename + '.py';
+    console.log('exePy', filename, inputs);
+
     try {
       const { result, sucess, error } = await new Promise<{
         sucess: boolean;
         error?: string;
         result: string[];
       }>((res, rej) => {
-        const pyShell = new PythonShell(filename, {
-          ...this.config,
-          args,
-        });
-        const outputs = Array<string>();
-        if (inputs) {
-          for (const ins of inputs) {
-            pyShell.send(ins);
+        try {
+          const pyShell = new PythonShell(filename, {
+            ...this.config,
+            args,
+          });
+          console.log('spawn success');
+
+          const outputs = Array<string>();
+          if (inputs) {
+            for (const ins of inputs) {
+              pyShell.send(ins);
+            }
           }
+          console.log('input inject success');
+
+          pyShell.on('message', (message) => {
+            if (message) outputs.push(String(message).trim());
+          });
+          pyShell.end((err, code, signal) => {
+            res({ sucess: true, result: outputs });
+          });
+
+          // 그외 예외 처리
+          // 정상 종료이여도 pyShell.end 이벤트랑 충돌
+          // pyShell.on('close', () => {
+          //   this.logger.error('close event');
+          //   rej({ sucess: false, error: 'closed' });
+          // });
+          pyShell.on('error', (error) => {
+            this.logger.error(error.traceback);
+            rej({ sucess: false, error: error.traceback });
+          });
+          pyShell.on('stderr', (error) => {
+            this.logger.error('stderr event');
+            rej({ sucess: false, error: 'stderr' });
+          });
+        } catch (error) {
+          console.log('프로미스 객체 안에도 애러 잡기');
+          rej({ sucess: false, error: '..' });
         }
-
-        pyShell.on('message', (message) => {
-          if (message) outputs.push(String(message).trim());
-        });
-        pyShell.end((err, code, signal) => {
-          res({ sucess: true, result: outputs });
-        });
-
-        // 그외 예외 처리
-        // 정상 종료이여도 pyShell.end 이벤트랑 충돌
-        // pyShell.on('close', () => {
-        //   console.log('close event', outputs);
-        //   rej({ sucess: false, error: 'closed' });
-        // });
-        pyShell.on('error', (error) => {
-          console.log('error event', outputs);
-          rej({ sucess: false, error: error.message });
-        });
-        pyShell.on('stderr', (error) => {
-          console.log('stderr event');
-          rej({ sucess: false, error: 'stderr' });
-        });
       });
+
+      // pyShell Result
+
       if (sucess) {
         return {
           ok: true,
           result,
         };
       }
-      return {
-        ok: false,
-        error,
-      };
+      throw new Error('cannot exePy ');
     } catch (error) {
       return {
         ok: false,

@@ -16,5 +16,6 @@ export class FinanceProcessor {
   async collectOHLCV(job: Job) {
     const jobData: collectOHLCVJob = job.data;
     console.log('incomming jobData', jobData);
+    await this.financeService.__collectOHLCV_DB(jobData);
   }
 }

@@ -11,6 +11,9 @@ import { FinanceService } from './finance.service';
     BullModule.registerQueue({
       name: 'finance',
     }),
+    BullModule.registerQueue({
+      name: 'counter',
+    }),
   ],
   providers: [FinanceService, FinanceResolver],
   controllers: [],

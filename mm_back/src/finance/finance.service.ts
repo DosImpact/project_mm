@@ -26,6 +26,8 @@ export class FinanceService {
     private readonly OHLCVRepo: Repository<OHLCV>,
     @InjectQueue('finance')
     private readonly financeQ: Queue,
+    @InjectQueue('counter')
+    private readonly counterQ: Queue,
   ) {
     const main = async () => {
       const code = '005930';
@@ -109,7 +111,8 @@ export class FinanceService {
 
   // get ohlcv from python
   // eg) 005930,1990-01-02,2050-01-01
-  async collectOHLCV_DB({
+  // !import : excution runtime is very long
+  async __collectOHLCV_DB({
     code,
     endDate,
     startDate,
@@ -164,15 +167,18 @@ export class FinanceService {
           }),
         );
       }
-    } catch (error) {}
+    } catch (error) {
+      return { ok: false };
+    }
   }
 
+  // TODO 진행중인 job에 대해 상태 시작전,진행중,진행상황,종료,성공|실패 등등
   async produceCollectOHLCV_DB(
     collectOHLCV_DBInput: CollectOHLCV_DBInput,
   ): Promise<CollectOHLCV_DBOutput> {
     try {
-      const job = await this.financeQ.add('collectOHLCV', collectOHLCV_DBInput);
-      console.log(job);
+      await this.financeQ.add('collectOHLCV', collectOHLCV_DBInput);
+      return { ok: true };
     } catch (error) {
       this.logger.error(error);
       return { ok: false };
