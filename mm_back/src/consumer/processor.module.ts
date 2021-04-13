@@ -1,8 +1,8 @@
 import { BullModule } from '@nestjs/bull';
 import { Module } from '@nestjs/common';
 import { CounterProcessor } from './processors/counter.processor';
-import { ProducerController } from './producer.controller';
-import { ProducerService } from './producer.service';
+import { ProcessorController } from './processor.controller';
+import { ProcessorService } from './processor.service';
 
 @Module({
   imports: [
@@ -12,8 +12,11 @@ import { ProducerService } from './producer.service';
     BullModule.registerQueue({
       name: 'counter',
     }),
+    BullModule.registerQueue({
+      name: 'finance',
+    }),
   ],
-  providers: [ProducerService, CounterProcessor],
-  controllers: [ProducerController],
+  providers: [ProcessorService, CounterProcessor],
+  controllers: [ProcessorController],
 })
 export class ProcessorModule {}
