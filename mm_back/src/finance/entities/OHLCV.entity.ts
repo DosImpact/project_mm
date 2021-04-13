@@ -16,9 +16,9 @@ import {
 export class OHLCV {
   // 복합키 구성 코드와날짜로 - 005930 + 20210403
   @IsNumber()
-  @Field(() => Int)
+  @Field(() => String)
   @PrimaryColumn()
-  code: number;
+  code: string;
 
   @IsNumber()
   @Field(() => Int)

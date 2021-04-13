@@ -63,7 +63,7 @@ export class FinanceService {
             ] = parsedData.data[i];
             await this.OHLCVRepo.save(
               this.OHLCVRepo.create({
-                code: Number(code),
+                code: code,
                 date: toDateNumber(date),
                 Open,
                 High,
@@ -150,7 +150,7 @@ export class FinanceService {
 
             await this.OHLCVRepo.save(
               this.OHLCVRepo.create({
-                code: Number(code),
+                code: code,
                 date: toDateNumber(date),
                 Open,
                 High,
