@@ -1,6 +1,8 @@
 import { PyShellService } from '@/pyshell/py-shell.service';
+import { InjectQueue } from '@nestjs/bull';
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Queue } from 'bull';
 import { Repository } from 'typeorm';
 import {
   CollectOHLCV_DBInput,
@@ -22,6 +24,8 @@ export class FinanceService {
     private readonly pyShellService: PyShellService,
     @InjectRepository(OHLCV)
     private readonly OHLCVRepo: Repository<OHLCV>,
+    @InjectQueue('finance')
+    private readonly financeQ: Queue,
   ) {
     const main = async () => {
       const code = '005930';
@@ -161,5 +165,17 @@ export class FinanceService {
         );
       }
     } catch (error) {}
+  }
+
+  async produceCollectOHLCV_DB(
+    collectOHLCV_DBInput: CollectOHLCV_DBInput,
+  ): Promise<CollectOHLCV_DBOutput> {
+    try {
+      const job = await this.financeQ.add('collectOHLCV', collectOHLCV_DBInput);
+      console.log(job);
+    } catch (error) {
+      this.logger.error(error);
+      return { ok: false };
+    }
   }
 }

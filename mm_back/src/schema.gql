@@ -77,6 +77,17 @@ type CheckProblem02Output {
   ok: Boolean!
 }
 
+input CollectOHLCV_DBInput {
+  code: String!
+  endDate: String!
+  startDate: String!
+}
+
+type CollectOHLCV_DBOutput {
+  error: String
+  ok: Boolean!
+}
+
 input CreateProblem01Input {
   answer: AnswerInputType!
   subTitle: String
@@ -209,6 +220,7 @@ type Mutation {
   deleteBanner(input: DeleteBannerInput!): DeleteBannerOutput!
   deleteUser(input: DeleteUserInput!): DeleteUserOutput!
   loginUser(input: LoginUserInput!): LoginUserOuput!
+  produceCollectOHLCV_DB(input: CollectOHLCV_DBInput!): CollectOHLCV_DBOutput!
   updateProfile(input: UpdateProfileInput!): UpdateProfileOutput!
   updateUser(input: UpdateUserInput!): UpdateUserOutput!
 }

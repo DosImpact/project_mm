@@ -1,4 +1,6 @@
 import { OHLCV } from '@/finance/entities/OHLCV.entity';
+import { FinanceModule } from '@/finance/finance.module';
+import { PyShellModule } from '@/pyshell/py-shell.module';
 import { BullModule } from '@nestjs/bull';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
@@ -45,6 +47,13 @@ import { ProcessorModule } from './processor.module';
       logging: false,
       entities: [OHLCV],
     }),
+    PyShellModule.forRoot({
+      mode: 'text',
+      pythonPath: process.env.PYTHON_PATH,
+      pythonOptions: ['-u'], // get print results in real-time
+      scriptPath: 'py',
+    }),
+    FinanceModule,
     ProcessorModule,
   ],
 })
