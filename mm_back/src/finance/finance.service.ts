@@ -9,6 +9,7 @@ import {
   CollectOHLCV_DBOutput,
 } from './dtos/collect.dtos';
 import { PandasOHLCV } from './dtos/py.interfaces';
+import { OHLCVByCodeInput, OHLCVByCodeOutput } from './dtos/query.dtos';
 import { OHLCV } from './entities/OHLCV.entity';
 
 const toDateNumber = (ms) => {
@@ -29,6 +30,12 @@ export class FinanceService {
     @InjectQueue('counter')
     private readonly counterQ: Queue,
   ) {
+    const test = async () => {
+      const res = await OHLCVRepo.find({ where: { code: '005930' } });
+      console.log(res);
+    };
+    // test();
+
     const main = async () => {
       const code = '005930';
       const { ok, error, result } = await this.pyShellService.exePy({
@@ -107,6 +114,25 @@ export class FinanceService {
       }
     };
     // main();
+  }
+
+  async getOHLCVByCode({ code }: OHLCVByCodeInput): Promise<OHLCVByCodeOutput> {
+    try {
+      const OHLCVs = await this.OHLCVRepo.find({
+        where: { code },
+        order: { date: 'DESC' },
+      });
+      return {
+        ok: true,
+        OHLCVs,
+        OHLCV_count: OHLCVs.length,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        error: 'cannot get getOHLCV',
+      };
+    }
   }
 
   // get ohlcv from python

@@ -1,10 +1,11 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   CollectOHLCV_DBInput,
   CollectOHLCV_DBOutput,
 } from './dtos/collect.dtos';
 import { FinanceService } from './finance.service';
 import { codes } from './constants';
+import { OHLCVByCodeInput, OHLCVByCodeOutput } from './dtos/query.dtos';
 @Resolver()
 export class FinanceResolver {
   constructor(private readonly financeService: FinanceService) {
@@ -22,9 +23,17 @@ export class FinanceResolver {
         console.log('====================================');
       }
     };
-    seed();
+    // seed();
   }
 
+  // Query Part
+
+  @Query((returns) => OHLCVByCodeOutput)
+  async getOHLCVByCode(@Args('input') _OHLCVByCodeInput: OHLCVByCodeInput) {
+    return this.financeService.getOHLCVByCode(_OHLCVByCodeInput);
+  }
+
+  // Mutation Part
   @Mutation((returns) => CollectOHLCV_DBOutput)
   async produceCollectOHLCV_DB(
     @Args('input') collectOHLCV_DBInput: CollectOHLCV_DBInput,

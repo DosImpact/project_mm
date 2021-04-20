@@ -225,6 +225,32 @@ type Mutation {
   updateUser(input: UpdateUserInput!): UpdateUserOutput!
 }
 
+type OHLCV {
+  Change: Float
+  Close: Int
+  High: Int
+  Low: Int
+  Open: Int
+  Volume: Int
+  code: String!
+  createdAt: DateTime!
+  date: Int!
+  deletedAt: DateTime
+  updatedAt: DateTime!
+  v: Float!
+}
+
+input OHLCVByCodeInput {
+  code: String!
+}
+
+type OHLCVByCodeOutput {
+  OHLCV_count: Int
+  OHLCVs: [OHLCV!]
+  error: String
+  ok: Boolean!
+}
+
 enum P02UserRole {
   admin
   student
@@ -317,6 +343,7 @@ enum PyTaskStatus {
 type Query {
   AdderProblem03(input: AdderProblem03Input!): AdderProblem03Output!
   bannerByName(input: BannerByNameInput!): BannerByNameOutput!
+  getOHLCVByCode(input: OHLCVByCodeInput!): OHLCVByCodeOutput!
   getProblem01(problem01Input: Problem01Input!): Problem01Output!
   getProblem02(input: Problem02Input!): Problem02Output!
   getProblems01: Problems01Output!
