@@ -1,4 +1,5 @@
 import React from "react";
+import ExploreSection from "./components/ExploreSection";
 import { Board, Explore, Inbox, Logo } from "./icons";
 
 const LeftBar = () => {
@@ -57,9 +58,6 @@ const StatusBar = () => {
       </div>
     </div>
   );
-};
-const ExploreSection = () => {
-  return <div className="p-8 ">ExploreSection</div>;
 };
 
 function App() {
