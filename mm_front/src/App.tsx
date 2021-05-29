@@ -62,12 +62,12 @@ const StatusBar = () => {
 
 function App() {
   return (
-    <div className="min-h-screen w-screen p-8 bg-blue-100">
-      <div className="flex rounded-xl bg-white">
+    <div className="min-h-screen w-screen p-8 bg-blue-100 h-full">
+      <div className="flex rounded-xl bg-white h-full">
         <section className="w-60 min-h-screen">
           <LeftBar />
         </section>
-        <section className="w-10/12">
+        <section className="w-10/12 h-full">
           <StatusBar />
           <ExploreSection />
         </section>
