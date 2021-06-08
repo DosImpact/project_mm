@@ -26,6 +26,16 @@ input AnswerInputType {
   isNumber: Boolean!
 }
 
+type Article {
+  author: String!
+  content: String!
+  createdAt: DateTime!
+  deletedAt: DateTime
+  id: Float!
+  updatedAt: DateTime!
+  v: Float!
+}
+
 type Banner {
   bannerName: String!
   bannerSize: Int!
@@ -84,6 +94,16 @@ input CollectOHLCV_DBInput {
 }
 
 type CollectOHLCV_DBOutput {
+  error: String
+  ok: Boolean!
+}
+
+input CreateArticleInput {
+  author: String!
+  content: String!
+}
+
+type CreateArticleOutput {
   error: String
   ok: Boolean!
 }
@@ -164,6 +184,12 @@ type DeleteUserOutput {
   user: User
 }
 
+type GetArticlesOutput {
+  articles: [Article!]
+  error: String
+  ok: Boolean!
+}
+
 input GetUserByEmailInput {
   email: String!
 }
@@ -214,6 +240,7 @@ type Mutation {
   UpdateProblem01(updateProblem01Input: UpdateProblem01Input!): UpdateProblem01Output!
   UpdateProblem02(input: UpdateProblem02Input!): UpdateProblem02Output!
   checkProblem01(checkProblem01Input: CheckProblem01Input!): CheckProblem01Output!
+  createArticle(input: CreateArticleInput!): CreateArticleOutput!
   createProblem01(createProblem01Input: CreateProblem01Input!): CreateProblem01Output!
   createProblem02(input: CreateProblem02Input!): CreateProblem02Output!
   createUser(input: CreateUserInput!): CreateUserOutput!
@@ -343,6 +370,7 @@ enum PyTaskStatus {
 type Query {
   AdderProblem03(input: AdderProblem03Input!): AdderProblem03Output!
   bannerByName(input: BannerByNameInput!): BannerByNameOutput!
+  getArticles: GetArticlesOutput!
   getOHLCVByCode(input: OHLCVByCodeInput!): OHLCVByCodeOutput!
   getProblem01(problem01Input: Problem01Input!): Problem01Output!
   getProblem02(input: Problem02Input!): Problem02Output!

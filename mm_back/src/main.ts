@@ -24,6 +24,10 @@ async function consumerServer() {
 async function DAServer() {}
 
 async function bootstrap() {
-  await Promise.all([applicationServer(), consumerServer(), DAServer()]);
+  await Promise.all([
+    applicationServer(),
+    // consumerServer(),
+    // DAServer(),
+  ]);
 }
 bootstrap();

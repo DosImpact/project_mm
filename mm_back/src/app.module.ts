@@ -33,6 +33,8 @@ import { Banner } from './banner/entities/banner.entity';
 import { AuthModule } from './auth/auth.module';
 import { OHLCV } from './finance/entities/OHLCV.entity';
 import { FinanceModule } from './finance/finance.module';
+import { Article } from './article/entities/article.entity';
+import { ArticleModule } from './article/article.module';
 
 @Module({
   imports: [
@@ -95,6 +97,7 @@ import { FinanceModule } from './finance/finance.module';
         NUser,
         Banner,
         OHLCV,
+        Article,
       ],
     }),
     GraphQLModule.forRoot({
@@ -130,6 +133,7 @@ import { FinanceModule } from './finance/finance.module';
     UploadsModule,
     BannersModule,
     FinanceModule,
+    ArticleModule,
   ],
 })
 export class AppModule implements NestModule {
