@@ -6,6 +6,8 @@ import reportWebVitals from "./reportWebVitals";
 import { client } from "./apollo";
 import "./styles/styles.css";
 import { BrowserRouter } from "react-router-dom";
+import "codemirror/lib/codemirror.css";
+import "@toast-ui/editor/dist/toastui-editor.css";
 
 ReactDOM.render(
   <React.StrictMode>
