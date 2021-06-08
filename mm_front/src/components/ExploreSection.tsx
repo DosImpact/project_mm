@@ -19,7 +19,9 @@ const ExploreSection = () => {
           </div>
         </div>
         <div className="col-span-4 bg-white rounded-md p-2 shadow-xl transition-all hover:shadow-2xl ">
-          <div className="w-full border-b p-3 text-xl font-bold">Info</div>
+          <div className="w-full border-b p-3 text-xl font-bold">
+            Statistics (APPL)
+          </div>
           <div className="w-full">
             <FactorView />
           </div>
