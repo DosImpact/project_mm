@@ -1,4 +1,5 @@
 import React from "react";
+import NewsView from "./NewsView";
 import TradingView from "./TradingView";
 
 const ExploreSection = () => {
@@ -9,8 +10,12 @@ const ExploreSection = () => {
           <TradingView />
         </div>
         <div className="bg-white rounded-md p-2 shadow-xl transition-all hover:shadow-2xl ">
-          <div className="w-full border-b p-3 text-xl font-bold">News</div>
-          <div className="w-full"></div>
+          <div className="w-full border-b p-3 text-xl font-bold">
+            News 요약서비스
+          </div>
+          <div className="w-full">
+            <NewsView />
+          </div>
         </div>
         <div className="col-span-4 bg-white rounded-md p-2 shadow-xl transition-all hover:shadow-2xl ">
           <div className="w-full border-b p-3 text-xl font-bold">Info</div>

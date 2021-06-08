@@ -26,11 +26,11 @@ const useArticles = () => {
         if (res.data?.ok) {
           const articles: Article[] = res.data?.articles;
           console.log(articles);
-          setState({
+          setState((p) => ({
             erorr: false,
             loading: false,
             articles,
-          });
+          }));
         } else {
           setState({
             erorr: true,
@@ -46,14 +46,42 @@ const useArticles = () => {
     };
     fetchData();
     return () => {};
-  });
+  }, []);
 
   return state;
 };
 
+const ArticleList = () => {
+  const { loading, articles, erorr } = useArticles();
+  return (
+    <>
+      <div>{loading && <span>loading...</span>}</div>
+      <div>
+        {!erorr && (
+          <div>
+            {articles?.map((e) => {
+              return (
+                <div
+                  key={String(e.id)}
+                  className="articleContainer my-3 rounded-md border-gray-100 border p-2"
+                >
+                  <div className="flex flex-row justify-between  ">
+                    <div className="font-bold text-xl">{e.author}</div>
+                    <div className="mx-2 text-gray-500">{e.createdAt}</div>
+                  </div>
+                  <div className="my-2">{e.content}</div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </>
+  );
+};
+
 const BoardSection = () => {
   const editorRef = React.useRef<Editor>(null);
-  const { loading, articles, erorr } = useArticles();
 
   const getContent = () => {
     const markdown = editorRef.current?.getInstance().getMarkdown();
@@ -83,24 +111,8 @@ const BoardSection = () => {
           글쓰기
         </button>
       </div>
-      <div>{loading && <div>loading...</div>}</div>
-      <div>
-        {!erorr && (
-          <div>
-            {articles?.map((e) => {
-              return (
-                <div className="articleContainer my-3 rounded-md border-gray-100 border p-2">
-                  <div className="flex flex-row justify-between  ">
-                    <div className="font-bold text-xl">{e.author}</div>
-                    <div className="mx-2 text-gray-500">{e.createdAt}</div>
-                  </div>
-                  <div className="my-2">{e.content}</div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
+
+      <ArticleList />
     </div>
   );
 };
