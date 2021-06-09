@@ -84,7 +84,12 @@ const FactorView = () => {
 
       <div className="flex">
         <FactorItemBull header="S&P SMA_3" content="+0.01%" />
-        <FactorItemBear header="S&P SMA_5" content="-0.20%" />
+        <FactorItemCustom
+          header="가격예측(Beta)"
+          content="137.85"
+          colorHeader="text-red-400"
+          colorContent="text-red-400"
+        />
         <FactorItemCustom
           header="더블 상승장"
           content="FALSE"
