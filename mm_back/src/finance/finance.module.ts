@@ -8,10 +8,11 @@ import { FinanceService } from './finance.service';
 import * as redisStore from 'cache-manager-redis-store';
 import { Ticker } from './entities/ticker.entity';
 import { FinanceController } from './finance.controller';
+import { SP500OHLCV } from './entities/SP500OHLCV.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([OHLCV, Ticker]),
+    TypeOrmModule.forFeature([OHLCV, SP500OHLCV, Ticker]),
     BullModule.registerQueue({
       name: 'finance',
     }),

@@ -38,6 +38,7 @@ import { Article } from './article/entities/article.entity';
 import { ArticleModule } from './article/article.module';
 import * as redisStore from 'cache-manager-redis-store';
 import { Ticker } from './finance/entities/ticker.entity';
+import { SP500OHLCV } from './finance/entities/SP500OHLCV.entity';
 
 @Module({
   imports: [
@@ -100,6 +101,7 @@ import { Ticker } from './finance/entities/ticker.entity';
         NUser,
         Banner,
         OHLCV,
+        SP500OHLCV,
         Article,
         Ticker,
       ],

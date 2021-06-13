@@ -14,6 +14,8 @@ import { OHLCVByCodeInput, OHLCVByCodeOutput } from './dtos/query.dtos';
 import { OHLCV } from './entities/OHLCV.entity';
 import { Ticker } from './entities/ticker.entity';
 import { ArrayUnique } from 'class-validator';
+import { SP500OHLCV } from './entities/SP500OHLCV.entity';
+import { date } from 'joi';
 
 const toDateNumber = (ms) => {
   const d = new Date(ms);
@@ -30,6 +32,22 @@ interface ITickers {
   Industry: Indexer;
 }
 
+interface IOHLCV {
+  Date;
+  Close: Indexer;
+  Open: Indexer;
+  High: Indexer;
+  Low: Indexer;
+  Volume: Indexer;
+  Change: Indexer;
+  SMA_3: Indexer;
+  SMA_5: Indexer;
+  SMA_10: Indexer;
+  SMA_20: Indexer;
+  MMT: Indexer;
+  MMT_TARGE: Indexer;
+}
+
 @Injectable()
 export class FinanceService {
   private readonly logger = new Logger(FinanceService.name);
@@ -38,6 +56,8 @@ export class FinanceService {
     private readonly pyShellService: PyShellService,
     @InjectRepository(OHLCV)
     private readonly OHLCVRepo: Repository<OHLCV>,
+    @InjectRepository(SP500OHLCV)
+    private readonly SP500OHLCVRepo: Repository<SP500OHLCV>,
     @InjectRepository(Ticker)
     private readonly tickerRepo: Repository<Ticker>,
     @InjectQueue('finance')
@@ -47,7 +67,23 @@ export class FinanceService {
     @Inject(CACHE_MANAGER)
     private readonly cache: Cache,
   ) {
-    const test = async () => {};
+    const test = async () => {
+      // const tickers = await this.tickerRepo.find({});
+      // tickers.slice(0, 1).map(async (ticker) => {
+      //   const res: IOHLCV = await this.cache.get(`OHLCV_${ticker.symbol}`);
+      //   if (res) {
+      //     for (let i = 0; i < res['Date'].length; i++) {
+      //       console.log(res);
+      //       console.log(res['Date'][`${i}`]);
+      //       break;
+      //       // this.SP500OHLCVRepo.create({
+      //       //   code: ticker.symbol
+      //       //   date: ticker.
+      //       // })
+      //     }
+      //   }
+      // });
+    };
     test();
 
     const main = async () => {
