@@ -1,7 +1,6 @@
 import React from "react";
 import Axiso from "axios";
-import Fuse from "fuse.js";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { tickerState } from "../store/tickerStats";
 
 const fuseOptions = {

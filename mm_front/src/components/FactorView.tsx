@@ -1,4 +1,7 @@
 import React from "react";
+import Axiso from "axios";
+import { useRecoilState } from "recoil";
+import { tickerState } from "../store/tickerStats";
 
 interface IFactorItem {
   header: string;
@@ -61,14 +64,92 @@ const FactorItemCustom: React.FunctionComponent<{
   );
 };
 
+interface Indexer {
+  [index: string]: string;
+}
+export interface IOHLCV {
+  Date?: Indexer;
+  Close?: Indexer;
+  Open?: Indexer;
+  High?: Indexer;
+  Low?: Indexer;
+  Volume?: Indexer;
+  Change?: Indexer;
+  SMA_3?: Indexer;
+  SMA_5?: Indexer;
+  SMA_10?: Indexer;
+  SMA_20?: Indexer;
+  MMT?: Indexer;
+  MMT_TARGE?: Indexer;
+}
+
+const useOHLCV = (symbol: string) => {
+  const [loading, setLoading] = React.useState<boolean>(true);
+  const [ohlcv, set_ohlcv] = React.useState<IOHLCV>({});
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const res = await Axiso.get(
+        `http://localhost:4000/finance/ticker/ohlcv/${symbol}`
+      );
+      // console.log(res);
+      set_ohlcv(res.data);
+      setLoading(false);
+    };
+    fetchData();
+    return () => {};
+  }, [symbol]);
+
+  return { loading, ohlcv };
+};
+
 const FactorView = () => {
+  const [ticker, _] = useRecoilState(tickerState);
+  const { loading, ohlcv } = useOHLCV(ticker.symbol);
+  // console.log(ohlcv);
+  // if (!loading && ohlcv && ohlcv?.Open) {
+  //   console.log(Object.keys(ohlcv?.Open));
+  //   console.log(Object.keys(ohlcv?.Open).slice(-1));
+  // }
+
   return (
     <div>
       <div className="flex">
-        <FactorItem header="Open" content="127.01" />
-        <FactorItem header="heigh" content="127.01" />
-        <FactorItem header="Close" content="126.68" />
-        <FactorItemBear header="Change" content="-0.20%" />
+        {!loading && (
+          <>
+            <FactorItem
+              header="Open"
+              content={String(
+                ohlcv &&
+                  ohlcv?.Open &&
+                  ohlcv?.Open[Number(Object.keys(ohlcv?.Open).slice(-1))]
+              )}
+            />
+            <FactorItem
+              header="High"
+              content={String(
+                ohlcv &&
+                  ohlcv?.High &&
+                  ohlcv?.High[Number(Object.keys(ohlcv?.High).slice(-1))]
+              )}
+            />
+            <FactorItem
+              header="Close"
+              content={String(
+                ohlcv &&
+                  ohlcv?.Close &&
+                  ohlcv?.Close[Number(Object.keys(ohlcv?.Close).slice(-1))]
+              )}
+            />
+            <FactorItemBear
+              header="Change"
+              content={String(
+                ohlcv &&
+                  ohlcv?.Change &&
+                  ohlcv?.Change[Number(Object.keys(ohlcv?.Change).slice(-1))]
+              )}
+            />
+          </>
+        )}
       </div>
       <div className="flex">
         <FactorItemBull header="3일 상승장" content="+12.37%" />
