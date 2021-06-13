@@ -1,4 +1,12 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
+import { FinanceService } from './finance.service';
 
-@Controller()
-export class FinanceController {}
+@Controller('finance')
+export class FinanceController {
+  constructor(private readonly financeService: FinanceService) {}
+
+  @Get('tickers')
+  async getTicker() {
+    return this.financeService.getTickers();
+  }
+}

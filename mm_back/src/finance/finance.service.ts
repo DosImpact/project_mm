@@ -1,9 +1,10 @@
 import { PyShellService } from '@/pyshell/py-shell.service';
 import { InjectQueue } from '@nestjs/bull';
-import { Injectable, Logger } from '@nestjs/common';
+import { CACHE_MANAGER, Inject, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Queue } from 'bull';
 import { Repository } from 'typeorm';
+import { Cache } from 'cache-manager';
 import {
   CollectOHLCV_DBInput,
   CollectOHLCV_DBOutput,
@@ -11,11 +12,23 @@ import {
 import { PandasOHLCV } from './dtos/py.interfaces';
 import { OHLCVByCodeInput, OHLCVByCodeOutput } from './dtos/query.dtos';
 import { OHLCV } from './entities/OHLCV.entity';
+import { Ticker } from './entities/ticker.entity';
+import { ArrayUnique } from 'class-validator';
 
 const toDateNumber = (ms) => {
   const d = new Date(ms);
   return Number(d.toJSON().substr(0, 10).split('-').join(''));
 };
+
+interface Indexer {
+  [index: string]: string;
+}
+interface ITickers {
+  Symbol: Indexer;
+  Name: Indexer;
+  Sector: Indexer;
+  Industry: Indexer;
+}
 
 @Injectable()
 export class FinanceService {
@@ -25,16 +38,17 @@ export class FinanceService {
     private readonly pyShellService: PyShellService,
     @InjectRepository(OHLCV)
     private readonly OHLCVRepo: Repository<OHLCV>,
+    @InjectRepository(Ticker)
+    private readonly tickerRepo: Repository<Ticker>,
     @InjectQueue('finance')
     private readonly financeQ: Queue,
     @InjectQueue('counter')
     private readonly counterQ: Queue,
+    @Inject(CACHE_MANAGER)
+    private readonly cache: Cache,
   ) {
-    const test = async () => {
-      const res = await OHLCVRepo.find({ where: { code: '005930' } });
-      console.log(res);
-    };
-    // test();
+    const test = async () => {};
+    test();
 
     const main = async () => {
       const code = '005930';
@@ -209,5 +223,23 @@ export class FinanceService {
       this.logger.error(error);
       return { ok: false };
     }
+  }
+
+  async tickersRedisToDB() {
+    const res: ITickers = await this.cache.get('S&P500');
+    new Array(505).fill(0).map(async (_, i) => {
+      // console.log(i);
+      await this.tickerRepo.save(
+        this.tickerRepo.create({
+          symbol: res.Symbol[i],
+          name: res.Name[i],
+          sector: res.Sector[i],
+          industry: res.Industry[i],
+        }),
+      );
+    });
+  }
+  async getTickers() {
+    return this.tickerRepo.find({});
   }
 }

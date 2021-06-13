@@ -1,11 +1,12 @@
 import { BullModule } from '@nestjs/bull';
 import {
+  CacheModule,
   MiddlewareConsumer,
   Module,
   NestModule,
   RequestMethod,
 } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as Joi from 'joi';
@@ -35,6 +36,8 @@ import { OHLCV } from './finance/entities/OHLCV.entity';
 import { FinanceModule } from './finance/finance.module';
 import { Article } from './article/entities/article.entity';
 import { ArticleModule } from './article/article.module';
+import * as redisStore from 'cache-manager-redis-store';
+import { Ticker } from './finance/entities/ticker.entity';
 
 @Module({
   imports: [
@@ -98,6 +101,7 @@ import { ArticleModule } from './article/article.module';
         Banner,
         OHLCV,
         Article,
+        Ticker,
       ],
     }),
     GraphQLModule.forRoot({
@@ -126,6 +130,17 @@ import { ArticleModule } from './article/article.module';
       pythonOptions: ['-u'], // get print results in real-time
       scriptPath: 'py',
     }),
+    // CacheModule.registerAsync({
+    //   imports: [ConfigModule],
+    //   inject: [ConfigService],
+    //   useFactory: async (configService: ConfigService) => ({
+    //     store: redisStore,
+    //     host: configService.get('REDIS_HOST'),
+    //     port: configService.get('REDIS_PORT'),
+    //     password: configService.get('REDIS_PASSWORD'),
+    //     ttl: configService.get('CACHE_TTL'),
+    //   }),
+    // }),
     AuthModule,
     UsersModule,
     ProblemsModule,
