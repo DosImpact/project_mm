@@ -32,7 +32,7 @@ interface ITickers {
   Industry: Indexer;
 }
 
-interface IOHLCV {
+export interface IOHLCV {
   Date;
   Close: Indexer;
   Open: Indexer;
@@ -277,5 +277,12 @@ export class FinanceService {
   }
   async getTickers() {
     return this.tickerRepo.find({});
+  }
+
+  async getTickerOHLCV(ticker_symbol: string) {
+    try {
+      const res: IOHLCV = await this.cache.get(`OHLCV_${ticker_symbol}`);
+      return res;
+    } catch (error) {}
   }
 }
