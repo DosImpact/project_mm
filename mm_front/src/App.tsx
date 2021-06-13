@@ -5,6 +5,9 @@ import { Route, Link, useLocation } from "react-router-dom";
 import cls from "classnames";
 import BoardSection from "./components/BoardSection";
 import InfoSection from "./components/InfoSection";
+import SearchBar from "./components/SearchBar";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { tickerState } from "./store/tickerStats";
 
 const LeftBar = () => {
   const location = useLocation();
@@ -62,19 +65,22 @@ const LeftBar = () => {
 };
 
 const StatusBar = () => {
+  const [ticker, _] = useRecoilState(tickerState);
+
   return (
     <div className="p-8 border-b border-gray-300 min-w-full max-w-full w-full">
       <div className="flex justify-between">
         <div className="left flex items-center text-2xl text-green-400">
-          🚀 APPL
+          🚀 {ticker.name !== "" ? ticker.name : "APPL"}
         </div>
         <div className="right flex gap-5 items-center">
           <div className="SearchBar">
-            <input
+            {/* <input
               className="p-1 border border-gray-300 rounded-sm w-64"
               placeholder="🏃‍♂ Search company"
               type="text"
-            ></input>
+            ></input> */}
+            <SearchBar />
           </div>
 
           <div className="InfoBox flex flex-col">

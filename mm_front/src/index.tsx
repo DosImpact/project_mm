@@ -8,12 +8,15 @@ import "./styles/styles.css";
 import { BrowserRouter } from "react-router-dom";
 import "codemirror/lib/codemirror.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
+import { RecoilRoot } from "recoil";
 
 ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
       <BrowserRouter>
-        <App />
+        <RecoilRoot>
+          <App />
+        </RecoilRoot>
       </BrowserRouter>
     </ApolloProvider>
   </React.StrictMode>,
