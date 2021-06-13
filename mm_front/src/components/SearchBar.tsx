@@ -72,7 +72,7 @@ const SearchBar = () => {
             const filtered_tickers = tickers.filter((t) =>
               t.name.startsWith(value)
             );
-            //   console.log(filtered_tickers);
+            console.log(filtered_tickers);
             if (filtered_tickers.length >= 1) {
               setFuzzyTicker(filtered_tickers[0].name);
               setFuzzySymbol(filtered_tickers[0].symbol);
@@ -81,7 +81,7 @@ const SearchBar = () => {
         ></input>
       </form>
       <div>
-        Search Result : {fuzzyTicker}({fuzzySymbol})
+        Search Result({tickers.length}) : {fuzzyTicker}({fuzzySymbol})
       </div>
     </div>
   );
